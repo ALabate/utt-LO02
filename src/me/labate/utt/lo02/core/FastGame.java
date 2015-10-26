@@ -1,12 +1,14 @@
 package me.labate.utt.lo02.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FastGame extends Game {
 
 	public FastGame() {
 		// Init vars
 		players = new ArrayList<Player>();
+		cardLeft = new HashMap<String,ArrayList<Integer>>();
 		
 		// As we are in fast game there is only one year
 		year = 0;

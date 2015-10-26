@@ -3,9 +3,12 @@
  */
 package me.labate.utt.lo02.core;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import me.labate.utt.lo02.core.Player.Bonus;
 import me.labate.utt.lo02.core.Player.Choice;
-import me.labate.utt.lo02.core.Player.Method;
+import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 /**
  * API to play one game without being able to break the rules
@@ -13,7 +16,7 @@ import me.labate.utt.lo02.core.Player.Method;
 public abstract class Game {
 	
 	public enum Season { INIT, SPRING, SUMMER, AUTUMN, WINTER };
-	public enum Action { NOTHING, GIANT, FERTILIZER, LEPRECHAUN_REQUEST, LEPRECHAUN, MOLE };
+	public enum Action { NOTHING, GIANT, FERTILIZER, LEPRECHAUN_REQUEST, LEPRECHAUN, MOLE, BONUS_ALLY, BONUS_SEEDS };
 	
 	// TODO add constraint 2 to 6 players
 	
@@ -84,13 +87,19 @@ public abstract class Game {
 	/**
 	 * Card used on the last action
 	 */
-	protected Card lastCard;
+	protected IngredientCard lastCard;
 
-	// TODO Add Card part
 	/**
 	 * Ally card used on the last action
 	 */
-//	protected AllyCard lastAllyCard;
+	protected AllyCard lastAllyCard;
+	
+	
+	/**
+	 * List of deck that contain list of card not used
+	 */
+	protected HashMap<String,ArrayList<Integer>> cardLeft;
+	
 	
 	/**
 	 * Reset the game and score without deleting players
@@ -188,16 +197,16 @@ public abstract class Game {
 	/**
 	 * @return the lastCard
 	 */
-	public Card getLastCard() {
+	public IngredientCard getLastCard() {
 		return lastCard;
 	}
 	
 	/**
 	 * @return the lastAllyCard
 	 */
-//	public AllyCard getLastAllyCard() {
-//		return lastAllyCard;
-//	}
+	public AllyCard getLastAllyCard() {
+		return lastAllyCard;
+	}
 
 	
 	//////////////////// Player API ////////////////////
@@ -225,7 +234,7 @@ public abstract class Game {
 	 * @param method The way you want to use the card
 	 * @param target Id of the player you want to attack with leprechaun
 	 */
-	public void chooseCard(int cardID, Method method, int target) {
+	public void chooseCard(int cardID, IngredientMethod method, int target) {
 		players.get(currentPlayerID).chooseCard(cardID, method, target);
 	}
 	
@@ -236,8 +245,18 @@ public abstract class Game {
 	 * @param cardID The id of the card you want to use
 	 * @param method The way you want to use the card
 	 */
-	public void chooseCard(int cardID, Method method) {
+	public void chooseCard(int cardID, IngredientMethod method) {
 		players.get(currentPlayerID).chooseCard(cardID, method);
+	}
+
+	/**
+	 * This let you choose the bonus on the beggining of a year on a
+	 * full game
+	 * @param bonus
+	 */
+	public void chooseBonus(Bonus bonus) {
+		players.get(currentPlayerID).chooseBonus(bonus);
+		
 	}
 	
 
@@ -297,7 +316,7 @@ public abstract class Game {
 	/**
 	 * Get current player cards
 	 */
-	public ArrayList<Card> getPlayerCards() {
+	public ArrayList<IngredientCard> getPlayerCards() {
 		return players.get(currentPlayerID).getCards();
 	}
 	

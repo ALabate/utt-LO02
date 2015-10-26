@@ -1,15 +1,14 @@
 package me.labate.utt.lo02.core;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import me.labate.utt.lo02.core.Game.Action;
-
+import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 public abstract class Player {
 
 	public enum Choice { NOTHING, BONUS, CARD, DEFENSE };
-	public enum Method { GIANT, FERTILIZER, LEPRECHAUN };
+	public enum Bonus { ALLY, SEEDS };
 	
 	/**
 	 * Contain the current state of the game
@@ -47,12 +46,12 @@ public abstract class Player {
 	/**
 	 * Contains the four card that the player has in his hand
 	 */
-	private ArrayList<Card> cards;
+	private ArrayList<IngredientCard> cards;
 
 	public Player(Game context, String name) {
 		this.context = context;
 		this.name = name;
-		cards = new ArrayList<Card>();
+		cards = new ArrayList<IngredientCard>();
 	}
 		
 
@@ -63,7 +62,7 @@ public abstract class Player {
 		if(cards.size() >= 4) {
 			return;
 		}
-		cards.add(new Card(context));
+		cards.add(new IngredientCard(context));
 	}
 	
 	/**
@@ -77,7 +76,7 @@ public abstract class Player {
 	 * @param method The way you want to use the card
 	 * @param target Id of the player you want to attack with leprechaun
 	 */
-	public void chooseCard(int cardID, Method method, int target) {
+	public void chooseCard(int cardID, IngredientMethod method, int target) {
 		if(this.neededChoice != Choice.CARD) {
 			// We didn't need to choose a card..
 			return;
@@ -90,7 +89,7 @@ public abstract class Player {
 		switch(method) {
 		case GIANT:
 			// Give a number of seed
-			this.seed += cards.get(cardID).getGiantValue(context.season);
+			this.seed += cards.get(cardID).getValue(IngredientMethod.GIANT, context.season);
 			// Write the action to the context
 			context.lastAction = Game.Action.GIANT;
 			context.lastPlayerID = context.getCurrentPlayerID();
@@ -98,11 +97,11 @@ public abstract class Player {
 			context.lastSeason = context.season;
 			context.lastYear = context.year;
 			context.lastCard = cards.get(cardID);
-			context.lastPoints = cards.get(cardID).getGiantValue(context.season);
+			context.lastPoints = cards.get(cardID).getValue(IngredientMethod.GIANT, context.season);
 			break;
 		case FERTILIZER:
 			// Convert a number of seed to menhir
-			int value = cards.get(cardID).getFertilizerValue(context.season);
+			int value = cards.get(cardID).getValue(IngredientMethod.FERTILIZER, context.season);
 			if(this.seed < value) {
 				value = this.seed;
 			}
@@ -125,7 +124,7 @@ public abstract class Player {
 			// Check if we can already realize the action without having to ask
 			Player targetPlayer = context.getPlayers().get(target);
 			if(targetPlayer.getAllyCard() == null) {
-				context.lastPoints = cards.get(cardID).getLeprechaunValue(context.season);
+				context.lastPoints = cards.get(cardID).getValue(IngredientMethod.LEPRECHAUN, context.season);
 				Player currentPlayer = context.getPlayers().get(context.getCurrentPlayerID());
 				// The target has not defense card or game in fast mode
 				context.lastAction = Action.LEPRECHAUN;
@@ -155,12 +154,34 @@ public abstract class Player {
 		this.neededChoice = Choice.NOTHING;
 		
 	}
+
+
+	/**
+	 * This let you choose the bonus on the beggining of a year on a
+	 * full game
+	 * @param bonus
+	 */
+	public void chooseBonus(Bonus bonus) {
+		if(this.neededChoice != Choice.BONUS) {
+			// We didn't need to choose a bonus..
+			return;
+		}
+		switch(bonus) {
+		case ALLY:
+			break;
+		case SEEDS:
+			seed += 2;
+			break;
+		}
+		this.neededChoice = Choice.NOTHING;
+	}
+
+	
 	private Object getAllyCard() {
 		// TODO really return ally card
 		return null;
 	}
-
-
+	
 	/**
 	 * It will execute the action written on the card
 	 * You cannot choose LEPRECHAUN with this method because it 
@@ -168,7 +189,7 @@ public abstract class Player {
 	 * @param cardID The id of the card you want to use
 	 * @param method The way you want to use the card
 	 */
-	public void chooseCard(int cardID, Method method) {
+	public void chooseCard(int cardID, IngredientMethod method) {
 		this.chooseCard(cardID, method, -1);
 	}
 
@@ -244,7 +265,8 @@ public abstract class Player {
 		this.name = name;
 	}
 
-	protected ArrayList<Card> getCards() {
+	protected ArrayList<IngredientCard> getCards() {
 		return cards;
 	}
+
 }

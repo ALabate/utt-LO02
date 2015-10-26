@@ -6,18 +6,28 @@ package me.labate.utt.lo02.core;
 import java.util.ArrayList;
 import java.util.Random;
 
-import me.labate.utt.lo02.core.Player.Method;
+import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 
-public class RandomStrategy extends Strategy {
+public class RandomStrategy implements Strategy {
 
+
+	/**
+	 * Contain the current state of the game
+	 */
+	Game context;
+	
+	/**
+	 * Constructor
+	 * @param context Context of the game
+	 */
 	public RandomStrategy(Game context) {
-		super(context);
+		this.context = context;
 	}
-
+	
 	@Override
 	public int card() {
-		ArrayList<Card> cards = context.getPlayers().get(context.currentPlayerID).getCards();
+		ArrayList<IngredientCard> cards = context.getPlayers().get(context.currentPlayerID).getCards();
 		// If cards are taken randomly so if we take them in the order, it is still random
 		for(int c = 0; c < cards.size(); c++) {
 			if(cards.get(c) != null) {
@@ -28,14 +38,14 @@ public class RandomStrategy extends Strategy {
 	}
 
 	@Override
-	public Method method() {
+	public IngredientMethod method() {
 		Random rand = new Random();
 		int val = rand.nextInt(3);
 		
 		switch(val) {
-		case 0: return Method.GIANT;
-		case 1: return Method.FERTILIZER;
-		default: return Method.LEPRECHAUN;
+		case 0: return IngredientMethod.GIANT;
+		case 1: return IngredientMethod.FERTILIZER;
+		default: return IngredientMethod.LEPRECHAUN;
 		}
 	}
 

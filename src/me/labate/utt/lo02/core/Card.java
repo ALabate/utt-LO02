@@ -1,55 +1,52 @@
 package me.labate.utt.lo02.core;
 
+import java.util.ArrayList;
 import java.util.Random;
 import me.labate.utt.lo02.core.Game.Season;
 
-public class Card {
+public abstract class Card {
 
 	/**
 	 * Contain the current state of the game
 	 */
-	private Game context;
+	protected Game context;
 	
 	/**
 	 * Card ID in the card deck
 	 */
-	private int cardID;
-	
-	/**
-	 * Array of Giant values per card
-	 */
-	private static final int[][] giantValues = {{1, 1, 1, 1}, {2, 0, 1, 1}, {0, 0, 4, 0}, {1, 3, 1, 0}, {2, 1, 1, 1}, {1, 2, 2, 0}, {2, 1, 1, 2}, {0, 3, 0, 3}, {1, 2, 1, 2}, {1, 3, 1, 2}, {2, 2, 0, 3}, {2, 2, 3, 1}, {2, 2, 3, 1}, {2, 2, 2, 2}, {3, 1, 3, 1}, {4, 1, 1, 1}, {2, 3, 2, 0}, {2, 2, 3, 0}, {3, 1, 4, 1}, {2, 4, 1, 2}, {3, 3, 3, 0}, {1, 2, 2, 1}, {4, 0, 1, 1}, {2, 0, 3, 1}};
-	
-
-	/**
-	 * Array of Fertilizer values per card
-	 */
-	private static final int[][] fertilizerValues = {{2, 0, 1, 1}, {1, 3, 0, 0}, {0, 2, 2, 0}, {1, 2, 1, 1}, {1, 0, 2, 2}, {1, 1, 2, 1}, {1, 1, 1, 3}, {2, 1, 3, 0}, {1, 0, 1, 4}, {2, 1, 2, 2}, {1, 1, 4, 1}, {2, 3, 0, 3}, {2, 3, 0, 3}, {0, 4, 4, 0}, {1, 4, 2, 1}, {1, 2, 1, 3}, {0, 4, 3, 0}, {1, 1, 1, 4}, {2, 1, 3, 3}, {2, 2, 2, 3}, {1, 3, 3, 2}, {1, 2, 3, 0}, {1, 1, 3, 1}, {0, 3, 0, 3}};
-	
-
-	/**
-	 * Array of leprechaun values per card
-	 */
-	private static final int[][] leprechaunValues = {{2, 0, 2, 0}, {0, 1, 2, 1}, {0, 0, 1, 3}, {1, 0, 4, 0}, {3, 0, 0, 2}, {2, 0, 1, 2}, {2, 0, 2, 2}, {1, 1, 3, 1}, {2, 4, 0, 0}, {0, 0, 3, 4}, {1, 2, 1, 3}, {1, 1, 3, 3}, {1, 1, 3, 3}, {1, 3, 2, 2}, {2, 4, 1, 1}, {1, 2, 2, 2}, {2, 1, 1, 3}, {2, 0, 3, 2}, {2, 3, 2, 2}, {1, 4, 3, 1}, {2, 3, 1, 3}, {0, 2, 2, 2}, {0, 0, 3, 3}, {1, 2, 2, 1}};
+	protected int cardID;
 	
 	/**
 	 * Constructor
 	 * @param context Context of the game
 	 */
-	public Card(Game context) {
+	public Card(Game context, int[][][] deck) {
 		this.context = context;
-
-		// TODO Replace this with an algorithm that forbid to 
-		// give the same card on the same game by storing in context an array
+		
+		// Create the list of 'not used card' if necessary
+		if(!context.cardLeft.containsKey(getClass().getName())) {
+			context.cardLeft.put(getClass().getName(), new ArrayList<Integer>());
+			for(int i = 0; i < deck.length ; i++) {
+				context.cardLeft.get(getClass().getName()).add(i);
+			}
+		}
+		ArrayList<Integer> cardLeft = context.cardLeft.get(getClass().getName());
+		
+		// Pick a random card ID
 		Random rand = new Random();
-		this.cardID = rand.nextInt(24);
+		int index = rand.nextInt(cardLeft.size());
+		this.cardID = cardLeft.get(index);
+
+		// Remove the card from left cards
+		cardLeft.remove(index);
+		
 	}
 	
 	/**
-	 * Convert season enum to id
+	 * Convert season enum to season id
 	 * @param season the season enum value
 	 */
-	private int seasonToID(Season season) {
+	protected int seasonToID(Season season) {
 		switch(season) {
 		case SPRING : return 0;
 		case SUMMER : return 1;
@@ -60,31 +57,27 @@ public class Card {
 	}
 	
 	/**
-	 * Get the card value for giant on the given season
+	 * Get the card value for the given method id on the given season
+	 * @param deck The deck of cards
+	 * @param method The selected method
 	 * @param season The selected season
-	 * @return the value
+	 * @return the value or -1 if the method is not on the card
 	 */
-	public int getGiantValue(Season season) {
-		return giantValues[cardID][seasonToID(season)];		
+	protected int getValue(int[][][] deck, int methodID, Season season) {
+		if(deck[cardID][methodID] == null)
+			return -1;
+		return deck[cardID][methodID][seasonToID(season)];
 	}
+
 	
 	/**
-	 * Get the card value for fertilizer on the given season
+	 * Get the card value for the first method on the given season
+	 * @param deck The deck of cards
 	 * @param season The selected season
-	 * @return the value
+	 * @return the value or -1 if the method is not on the card
 	 */
-	public int getFertilizerValue(Season season) {
-		return fertilizerValues[cardID][seasonToID(season)];		
+	protected int getValue(int[][][] deck, Season season) {
+		return getValue(deck, 0, season);	
 	}
-	
-	/**
-	 * Get the card value for leprechaun on the given season
-	 * @param season The selected season
-	 * @return the value
-	 */
-	public int getLeprechaunValue(Season season) {
-		return leprechaunValues[cardID][seasonToID(season)];		
-	}
-	
 	
 }

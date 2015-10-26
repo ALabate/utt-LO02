@@ -3,27 +3,14 @@
  */
 package me.labate.utt.lo02.core;
 
-import me.labate.utt.lo02.core.Player.Method;
+import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 /**
  * @author alabate
  *
  */
-public abstract class Strategy {
-
-	/**
-	 * Contain the current state of the game
-	 */
-	Game context;
+public interface Strategy {
 	
-	/**
-	 * Constructor
-	 * @param context Context of the game
-	 */
-	public Strategy(Game context) {
-		this.context = context;
-	}
-
 	/**
 	 * Return the card choosen by the strategy
 	 * @return Card choosen by the stategy
@@ -34,7 +21,7 @@ public abstract class Strategy {
 	 * Return the method choosen by the strategy
 	 * @return Method choosen by the stategy
 	 */
-	public abstract Method method();
+	public abstract IngredientMethod method();
 	
 	/**
 	 * Return the target choosen by the strategy
