@@ -1,97 +1,146 @@
 package me.labate.utt.lo02.core;
 
-import java.util.ArrayList;
+import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 
 public class FullGame extends Game {
+	//TODO refill deck after a year
+	// TODO add constraint 2 to 6 players
+	
+	/**
+	 * Current player id
+	 */
+	private int currentPlayerID;
+	
+	public FullGame() {
+		super();
+		reset();		
+	}
 	
 
-	public FullGame() {
-		// Init vars
-		players = new ArrayList<Player>();
-		
+	@Override
+	public void reset() {
 		// As we are in full game there is the same number of years as the number of players
-		year = 0;
-		yearCount = -1;
+		setYear(0);
+		setYearCount(0);
 		
 		// The init season is used to give cards to players
-		season = Season.INIT;
+		setSeason(Season.INIT);
 		
-		// We start with the first player
-		currentPlayerID = year;
+		//TODO finish him !
 		
+		// We start with the 'init' player
+		currentPlayerID = -1;		
 	}
 
 	@Override
 	public boolean next() {
-		if(year >= yearCount) {
-			return false;
-		}
-
+		
 		// Initialization
-		if(season == Season.INIT && currentPlayerID == year) {
+		if(getSeason() == Season.INIT && currentPlayerID == -1) {
+			currentPlayerID = getYear();
 			// Set the number of years
-			yearCount = players.size();
+			setYearCount(getPlayerCount());
+			// Save scores and reset players
+			for(int playerID = 0; playerID < getPlayerCount(); playerID++) {
+				int score = getPlayer(playerID).getScore() + getPlayer(playerID).getMenhir();
+				getPlayer(playerID).reset();
+				getPlayer(playerID).setScore(score);
+			}
+			// Reset card deck
+			getCardsLeft().clear();
 			// Give 4 cards to everyone
 			for(int cardNbr = 0 ; cardNbr < 4 ; cardNbr++) {
 				// To each players
-				for(int player = 0 ; player < players.size(); player++) {
-					players.get(player).drawCard();
+				for(int player = 0 ; player < getPlayerCount(); player++) {
+					getPlayer(player).drawIngredientCard();
 				}
 			}
 		}
 		else
 		{
-			// Finish the last turn
-			lastAction = Action.NOTHING;
-			if(getPlayers().get(getCurrentPlayerID()).getNeededChoice() != Player.Choice.NOTHING) {
-				// Cannot continue if the current user didn't choose
+			// Check the end
+			if(getYear() >= getYearCount()) {
 				return false;
 			}
 			
+			// Finish the last turn
+			if(getNeededChoice() != Choice.NOTHING) {
+				// Force bot to defend if it's not done yet
+				if(getNeededChoice() == Choice.DEFEND) {
+					getNeededPlayer().doAction();
+				}
+				// Cannot continue if the current user didn't choose
+				return true;
+			}
+			
+			// Propose to all bot to use their mole attack
+			if(getSeason() != Season.INIT && getLastAction() != Action.LEPRECHAUN_REQUEST) {
+				for(int i = 0; i < getPlayerCount() ; i++) {
+					if(getPlayer(i).getAllyCard() != null && getPlayer(i).getAllyCard().getValue(AllyMethod.MOLE, getSeason()) >= 0) {
+						setNeeded(getPlayer(i), Choice.MOLE);
+						if(getPlayer(i).doAction()) {
+							clearNeeded();
+							return true;
+						}
+						clearNeeded();
+					}
+				}
+			}
+			setLastAction(Action.NOTHING, null, null, -1, null, null, getSeason(), getYear());
+						
 			// Increment time
 			currentPlayerID++;
-			if(currentPlayerID >= players.size()) {
+			if(currentPlayerID >= getPlayerCount()) {
 				currentPlayerID = 0;
 			}
-			if(currentPlayerID == year) {
-				currentPlayerID = 0;
-				switch(season) {
-				case INIT : season = Season.SPRING; break;
-				case SPRING : season = Season.SUMMER; break;
-				case SUMMER : season = Season.AUTUMN; break;
-				case AUTUMN : season = Season.WINTER; break;
+			if(currentPlayerID == getYear()) {
+				switch(getSeason()) {
+				case INIT : 	setSeason(Season.SPRING); break;
+				case SPRING : 	setSeason(Season.SUMMER); break;
+				case SUMMER : 	setSeason(Season.AUTUMN); break;
+				case AUTUMN : 	setSeason(Season.WINTER); break;
 				case WINTER : 
-					season = Season.INIT; 
-					year++;
-					currentPlayerID = year;
-					if(year < yearCount) {
-						return false;
-					}
-					break;
+					setSeason(Season.INIT); 
+					setYear(getYear() + 1);
+					currentPlayerID = -1;
+					return(getYear() < getYearCount());
 				}
 			}
 		}
 		
-		
 		// Prepare the next turn
-		if(season == Season.INIT) {
-			players.get(currentPlayerID).setNeededChoice(Player.Choice.BONUS);
+		if(getSeason() == Season.INIT) {
+			setNeeded(getPlayer(currentPlayerID), Choice.BONUS);
 		}
-		else
-		{
-			players.get(currentPlayerID).setNeededChoice(Player.Choice.CARD);
+		else {
+			setNeeded(getPlayer(currentPlayerID), Choice.INGREDIENT);
 		}
 		
 		// Let the bot play
-		getPlayers().get(getCurrentPlayerID()).doChoice();
+		getNeededPlayer().doAction();
+		if(getNeededChoice() == Choice.DEFEND) {
+			getNeededPlayer().doAction();
+		}
 		
 		return true;
 	}
 
+
 	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	public Player getNextPlayer() {
+		int id = currentPlayerID;
+		id++;
+		if(id >= getPlayerCount()) {
+			id = 0;
+		}
+		if(id == getYear() && getSeason() == Season.WINTER) {
+			if(getYear() < getYearCount()) {
+				return getPlayer(getYear() + 1);
+			}
+			return null;
+		}
+		return getPlayer(id);
 	}
+
 		
 }

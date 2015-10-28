@@ -3,10 +3,10 @@
  */
 package me.labate.utt.lo02.core;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
+import me.labate.utt.lo02.core.Player.Bonus;
 
 
 public class RandomStrategy implements Strategy {
@@ -26,22 +26,15 @@ public class RandomStrategy implements Strategy {
 	}
 	
 	@Override
-	public int card() {
-		ArrayList<IngredientCard> cards = context.getPlayers().get(context.currentPlayerID).getCards();
-		// If cards are taken randomly so if we take them in the order, it is still random
-		for(int c = 0; c < cards.size(); c++) {
-			if(cards.get(c) != null) {
-				return c;
-			}
-		}
-		return -1;
+	public IngredientCard card() {
+		Random rand = new Random();
+		return context.getNeededPlayer().getIngredientCard(rand.nextInt(context.getNeededPlayer().getIngredientCardCount()));
 	}
 
 	@Override
 	public IngredientMethod method() {
 		Random rand = new Random();
 		int val = rand.nextInt(3);
-		
 		switch(val) {
 		case 0: return IngredientMethod.GIANT;
 		case 1: return IngredientMethod.FERTILIZER;
@@ -50,9 +43,34 @@ public class RandomStrategy implements Strategy {
 	}
 
 	@Override
-	public int target() {
+	public Player target() {
 		Random rand = new Random();
-		return rand.nextInt(context.getPlayers().size());
+		return context.getPlayer(rand.nextInt(context.getPlayerCount()));
+	}
+
+	@Override
+	public Bonus bonus() {
+		Random rand = new Random();
+		Bonus[] array = Bonus.values();
+		return array[rand.nextInt(array.length)];
+	}
+
+	@Override
+	public boolean defend() {
+		Random rand = new Random();
+		return (rand.nextInt(1) == 0);
+	}
+
+	@Override
+	public boolean moleAttack() {
+		Random rand = new Random();
+		return (rand.nextInt(1) == 0);
+	}
+
+	@Override
+	public Player moleAttackTarget() {
+		Random rand = new Random();
+		return context.getPlayer(rand.nextInt(context.getPlayerCount()));
 	}
 
 }

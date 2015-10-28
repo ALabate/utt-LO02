@@ -1,85 +1,106 @@
 package me.labate.utt.lo02.core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FastGame extends Game {
 
+	// TODO add constraint 2 to 6 players
+	
+	/**
+	 * Current player id
+	 */
+	private int currentPlayerID;
+
 	public FastGame() {
-		// Init vars
-		players = new ArrayList<Player>();
-		cardLeft = new HashMap<String,ArrayList<Integer>>();
-		
+		super();
+		reset();
+	}
+
+
+	@Override
+	public void reset() {
 		// As we are in fast game there is only one year
-		year = 0;
-		yearCount = 1;
+		setYear(0);
+		setYearCount(1);
 		
 		// The init season is used to give cards to players
-		season = Season.INIT;		
+		setSeason(Season.INIT);
+		
+		//TODO finish him !
 		
 	}
 
 	@Override
 	public boolean next() {
-		if(year >= yearCount) {
+		if(getYear() >= getYearCount()) {
 			return false;
 		}
 
 		// Initialization turn if needed
-		if(season == Season.INIT) {
+		if(getSeason() == Season.INIT) {
 			// Give 4 cards
 			for(int cardNbr = 0 ; cardNbr < 4 ; cardNbr++) {
 				// To each players
-				for(int player = 0 ; player < players.size(); player++) {
-					players.get(player).drawCard();
+				for(int playerID = 0 ; playerID < getPlayerCount(); playerID++) {
+					getPlayer(playerID).drawIngredientCard();
 				}
 			}
+			// Give two seeds to each players
+			for(int playerID = 0 ; playerID < getPlayerCount(); playerID++) {
+				getPlayer(playerID).setSeed(2);
+			}
 			// At the end of the initialization turn we are in spring (first season)
-			season = Season.SPRING;
-			currentPlayerID = -1;
+			setSeason(Season.SPRING);
+			currentPlayerID = 0;
 		}
 		else
 		{
 			// Finish the last turn
-			lastAction = Action.NOTHING;
-			if(getPlayers().get(getCurrentPlayerID()).getNeededChoice() != Player.Choice.NOTHING) {
-				// Cannot continue if the current user didn't choose
+			setLastAction(Action.NOTHING, null, null, -1, null, null, getSeason(), getYear());
+			if(getNeededChoice() != Choice.NOTHING) {
+				// Cannot continue the needed one didn't choose
 				return false;
 			}
-		}
-		
-		// Increment time
-		currentPlayerID++;
-		if(currentPlayerID >= players.size()) {
-			currentPlayerID = 0;
-			switch(season) {
-			case INIT : season = Season.SPRING; break;
-			case SPRING : season = Season.SUMMER; break;
-			case SUMMER : season = Season.AUTUMN; break;
-			case AUTUMN : season = Season.WINTER; break;
-			case WINTER : 
-				season = Season.INIT; 
-				year++;
-				if(year < yearCount) {
-					return false;
+
+			// Increment time
+			currentPlayerID++;
+			if(currentPlayerID >= getPlayerCount() || currentPlayerID < 0) {
+				currentPlayerID = 0;
+				switch(getSeason()) {
+				case INIT : 	setSeason(Season.SPRING); break;
+				case SPRING : 	setSeason(Season.SUMMER); break;
+				case SUMMER : 	setSeason(Season.AUTUMN); break;
+				case AUTUMN : 	setSeason(Season.WINTER); break;
+				case WINTER : 
+					setSeason(Season.INIT); 
+					setYear(getYear() + 1);
+					if(getYear() >= getYearCount()) {
+						return false;
+					}
+					break;
 				}
-				break;
 			}
 		}
-		
+				
 		// Prepare the next turn
-		players.get(currentPlayerID).setNeededChoice(Player.Choice.CARD);
+		setNeeded(getPlayer(currentPlayerID), Choice.INGREDIENT);
 		
 		// Let the bot play
-		getPlayers().get(getCurrentPlayerID()).doChoice();
+		getPlayer(currentPlayerID).doAction();
 		
 		return true;
 	}
 
 	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	public Player getNextPlayer() {
+		int id = currentPlayerID;
+		id++;
+		if(id >= getPlayerCount() || id < 0) {
+			id = 0;
+			if(getSeason() == Season.WINTER && getYear() + 1>= getYearCount()) {
+				return null;
+			}
+		}
+		return getPlayer(id);
 	}
 		
 }

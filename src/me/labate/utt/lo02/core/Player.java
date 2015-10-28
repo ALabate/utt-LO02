@@ -2,19 +2,57 @@ package me.labate.utt.lo02.core;
 
 import java.util.ArrayList;
 
+import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 import me.labate.utt.lo02.core.Game.Action;
+import me.labate.utt.lo02.core.Game.Choice;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 public abstract class Player {
 
-	public enum Choice { NOTHING, BONUS, CARD, DEFENSE };
 	public enum Bonus { ALLY, SEEDS };
 	
+	
+	
+
+	//////////////////// Score : Attributes ////////////////////
+
 	/**
 	 * Contain the current state of the game
 	 */
-	protected Game context;
+	private Game context;
+
+	//////////////////// General : Methods ////////////////////
 	
+	/**
+	 * Constructor
+	 * @param context Data about the game
+	 * @param name Name of the player
+	 */
+	protected Player(Game context, String name) {
+		this.context = context;
+		setName(name);
+		ingredientCards = new ArrayList<IngredientCard>();
+		reset();
+	}		
+
+	/**
+	 * Reset everything except name and context
+	 */
+	public void reset() {
+		this.allyCard = null;
+		this.ingredientCards.clear();
+		this.score = 0;
+		this.seed = 0;
+		this.menhir = 0;
+	}
+
+	/**
+	 * Tell if its a bot or not
+	 * @return true if its a bot
+	 */
+	public abstract boolean isBot();
+	
+	//////////////////// Score : Attributes ////////////////////
 	/**
 	 * Number of seeds the player has
 	 * On the real game, it is pebbles next to the field card
@@ -35,180 +73,10 @@ public abstract class Player {
 	/**
 	 * The name of the player
 	 */
-	protected String name;
-		
+	private String name;
 	
-	/**
-	 * Set the choice that the player has to do so the game continue
-	 */
-	private Choice neededChoice = Choice.NOTHING;
+	//////////////////// Score : Methods ////////////////////
 
-	/**
-	 * Contains the four card that the player has in his hand
-	 */
-	private ArrayList<IngredientCard> cards;
-
-	public Player(Game context, String name) {
-		this.context = context;
-		this.name = name;
-		cards = new ArrayList<IngredientCard>();
-	}
-		
-
-	/**
-	 * Put a new card in the hand of the player
-	 */
-	public void drawCard() {
-		if(cards.size() >= 4) {
-			return;
-		}
-		cards.add(new IngredientCard(context));
-	}
-	
-	/**
-	 * If the player is a bot, it will do the needed choice
-	 */
-	public abstract void doChoice();
-	
-	/**
-	 * It will execute the action written on the card
-	 * @param cardID The id of the card you want to use
-	 * @param method The way you want to use the card
-	 * @param target Id of the player you want to attack with leprechaun
-	 */
-	public void chooseCard(int cardID, IngredientMethod method, int target) {
-		if(this.neededChoice != Choice.CARD) {
-			// We didn't need to choose a card..
-			return;
-		}
-		// check if card is valid and not removed
-		if(cards.get(cardID) == null) {
-			// TODO better error..
-			return;
-		}
-		switch(method) {
-		case GIANT:
-			// Give a number of seed
-			this.seed += cards.get(cardID).getValue(IngredientMethod.GIANT, context.season);
-			// Write the action to the context
-			context.lastAction = Game.Action.GIANT;
-			context.lastPlayerID = context.getCurrentPlayerID();
-			context.lastTargetID = -1;
-			context.lastSeason = context.season;
-			context.lastYear = context.year;
-			context.lastCard = cards.get(cardID);
-			context.lastPoints = cards.get(cardID).getValue(IngredientMethod.GIANT, context.season);
-			break;
-		case FERTILIZER:
-			// Convert a number of seed to menhir
-			int value = cards.get(cardID).getValue(IngredientMethod.FERTILIZER, context.season);
-			if(this.seed < value) {
-				value = this.seed;
-			}
-			seed -= value;
-			menhir += value;
-			// Write the action to the context
-			context.lastAction = Game.Action.FERTILIZER;
-			context.lastPlayerID = context.getCurrentPlayerID();
-			context.lastTargetID = -1;
-			context.lastSeason = context.season;
-			context.lastYear = context.year;
-			context.lastCard = cards.get(cardID);
-			context.lastPoints = value;
-			break;
-		case LEPRECHAUN:
-			// Take seeds from another player
-			if(target < 0 || target >= this.context.players.size()) {
-		        throw new IllegalArgumentException();
-			}
-			// Check if we can already realize the action without having to ask
-			Player targetPlayer = context.getPlayers().get(target);
-			if(targetPlayer.getAllyCard() == null) {
-				context.lastPoints = cards.get(cardID).getValue(IngredientMethod.LEPRECHAUN, context.season);
-				Player currentPlayer = context.getPlayers().get(context.getCurrentPlayerID());
-				// The target has not defense card or game in fast mode
-				context.lastAction = Action.LEPRECHAUN;
-				if(targetPlayer.getSeed() < context.lastPoints) {
-					context.lastPoints = targetPlayer.getSeed();
-				}
-				targetPlayer.setSeed(targetPlayer.getSeed() - context.lastPoints);
-				currentPlayer.setSeed(currentPlayer.getSeed() + context.lastPoints);
-				
-			}
-			else {
-				// We have to ask the target if he want to defend
-				context.lastAction = Action.LEPRECHAUN_REQUEST;
-				context.lastPoints = -1;
-			}
-			// No mather what we've done, theses informations doen't change
-			context.lastPlayerID = context.getCurrentPlayerID();
-			context.lastTargetID = target;
-			context.lastSeason = context.getSeason();
-			context.lastYear = context.getYear();
-			context.lastCard = cards.get(cardID);
-			break;
-		}
-		// Remove used card
-		cards.set(cardID, null);
-		// Confirm the choice has been made
-		this.neededChoice = Choice.NOTHING;
-		
-	}
-
-
-	/**
-	 * This let you choose the bonus on the beggining of a year on a
-	 * full game
-	 * @param bonus
-	 */
-	public void chooseBonus(Bonus bonus) {
-		if(this.neededChoice != Choice.BONUS) {
-			// We didn't need to choose a bonus..
-			return;
-		}
-		switch(bonus) {
-		case ALLY:
-			break;
-		case SEEDS:
-			seed += 2;
-			break;
-		}
-		this.neededChoice = Choice.NOTHING;
-	}
-
-	
-	private Object getAllyCard() {
-		// TODO really return ally card
-		return null;
-	}
-	
-	/**
-	 * It will execute the action written on the card
-	 * You cannot choose LEPRECHAUN with this method because it 
-	 * needs a target but there is an overloaded method for that.
-	 * @param cardID The id of the card you want to use
-	 * @param method The way you want to use the card
-	 */
-	public void chooseCard(int cardID, IngredientMethod method) {
-		this.chooseCard(cardID, method, -1);
-	}
-
-	/**
-	 * neededChoice getter : get the choice that the player has to do so the game continue
-	 * @return the choice that the player has to do so the game continue
-	 */
-	public Choice getNeededChoice() {
-		return neededChoice;
-	}
-
-	/**
-	 * neededChoice setter : set the choice that the player has to do so the game continue
-	 * @param neededChoice the choice that the player has to do so the game continue
-	 */
-	public void setNeededChoice(Choice neededChoice) {
-		this.neededChoice = neededChoice;
-	}
-	
 	/**
 	 * @return the seed
 	 */
@@ -219,7 +87,7 @@ public abstract class Player {
 	/**
 	 * @param seed the seed to set
 	 */
-	public void setSeed(int seed) {
+	protected void setSeed(int seed) {
 		this.seed = seed;
 	}
 
@@ -233,7 +101,7 @@ public abstract class Player {
 	/**
 	 * @param menhir the menhir to set
 	 */
-	public void setMenhir(int menhir) {
+	protected void setMenhir(int menhir) {
 		this.menhir = menhir;
 	}
 
@@ -247,9 +115,10 @@ public abstract class Player {
 	/**
 	 * @param score the score to set
 	 */
-	public void setScore(int score) {
+	protected void setScore(int score) {
 		this.score = score;
 	}
+
 
 	/**
 	 * @return the name
@@ -265,8 +134,297 @@ public abstract class Player {
 		this.name = name;
 	}
 
-	protected ArrayList<IngredientCard> getCards() {
-		return cards;
+	
+	//////////////////// Actions methods ////////////////////
+	
+
+	/**
+	 * If the player is a bot, it will do one of the actions
+	 * @return true if an action has been done
+	 */
+	protected abstract boolean doAction();
+	
+	/**
+	 * It will execute the action written on the card
+	 * @param cardID The id of the card you want to use
+	 * @param method The way you want to use the card
+	 * @param target Id of the player you want to attack with leprechaun
+	 */
+	public void playIngredientCard(IngredientCard card, IngredientMethod method, Player target) {
+		// Check if this choice is really needed and if the card belongs to this player
+		if(!context.getNeededPlayer().equals(this) 
+				|| context.getNeededChoice() != Choice.INGREDIENT
+				|| !ingredientCards.contains(card)) {
+			return;
+		}
+
+		switch(method) {
+			case GIANT: // Give a number of seed
+			{
+				// Get data
+				int points = card.getValue(IngredientMethod.GIANT, context.getSeason());
+				// Execute action
+				seed += points;
+				// log the action to the context
+				context.setLastAction(Action.GIANT, this, card, points, null, null, context.getSeason(), context.getYear());
+				context.clearNeeded();
+				break;
+			}
+			case FERTILIZER: // Convert a number of seed to menhir
+			{
+				// Get data
+				int points = card.getValue(IngredientMethod.FERTILIZER, context.getSeason());
+				if(this.seed < points) {
+					points = this.seed;
+				}
+				// Execute action
+				seed -= points;
+				menhir += points;
+				// log the action to the context
+				context.setLastAction(Action.FERTILIZER, this, card, points, null, null, context.getSeason(), context.getYear());
+				context.clearNeeded();
+				break;
+			}
+			case LEPRECHAUN:
+			{
+				// Check if the target is a member of the game
+				if(context.getPlayerID(target) < 0) {
+					return;
+				}
+				// log the action to the context
+				context.setLastAction(Action.LEPRECHAUN_REQUEST, this, card, -1, target, null, context.getSeason(), context.getYear());
+				context.setNeeded(target, Choice.DEFEND);
+				// If target has no ally card or we are in fast game, we can do the attack now
+				if(target.getAllyCard() == null) {
+					// Execute action
+					target.chooseDefend(false);
+				}
+				break;
+			}
+		}
+		// Remove used card
+		ingredientCards.remove(card);
 	}
+
+	/**
+	 * It will execute the action written on the card
+	 * You cannot choose LEPRECHAUN with this method because it 
+	 * needs a target but there is an overloaded method for that.
+	 * @param cardID The id of the card you want to use
+	 * @param method The way you want to use the card
+	 */
+	public void playIngredientCard(IngredientCard card, IngredientMethod method) {
+		this.playIngredientCard(card, method, null);
+	}
+	
+	/**
+	 * This let you choose the bonus on the beginning of a year on a
+	 * full game
+	 * @param bonus
+	 */
+	public void chooseBonus(Bonus bonus) {
+		// Check if this choice is really needed and if the card belongs to this player
+		if(!context.getNeededPlayer().equals(this) 
+				|| context.getNeededChoice() != Choice.BONUS) {
+			return;
+		}
+		
+		switch(bonus) {
+			case ALLY:
+			{
+				// Execute action
+				allyCard = new AllyCard(context);
+				// log the action to the context
+				context.setLastAction(Action.BONUS_ALLY, this, null, -1, null, allyCard, context.getSeason(), context.getYear());
+				context.clearNeeded();
+				break;
+			}
+			case SEEDS:
+			{
+				// Execute action
+				seed += 2;
+				// log the action to the context
+				context.setLastAction(Action.BONUS_SEEDS, this, null, 2, null, null, context.getSeason(), context.getYear());
+				context.clearNeeded();
+				break;
+			}
+		}
+	}
+	
+
+	public void chooseDefend(boolean defend) {
+		// Check if this choice is really needed and if the card belongs to this player
+		if(!context.getNeededPlayer().equals(this) 
+				|| context.getNeededChoice() != Choice.DEFEND) {
+			return;
+		}
+
+		
+		// Get some data
+		Player target = this;
+		Player player = context.getLastPlayer();
+		AllyCard card = null;
+		int points = context.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, context.getLastSeason());
+		
+		// Check if the player can defend
+		if(defend) {
+			
+			// Calculate points with defense
+			int defendPoints = target.getAllyCard().getValue(AllyMethod.DOG, context.getLastSeason());
+			if(defendPoints >= 0) {
+				points -= defendPoints;
+				if(points < 0) {
+					points = 0;
+				}
+			}
+			// save ally card
+			card = target.getAllyCard();
+			// Remove ally card
+			target.allyCard = null;
+			
+		}
+		// Check if the target has enough seeds
+		if(target.getSeed() < points) {
+			points = target.getSeed();
+		}
+			
+		// Execute the action
+		target.setSeed(target.getSeed() - points);
+		player.setSeed(player.getSeed() + points);
+
+		// log the action to the context
+		context.setLastAction(Action.LEPRECHAUN, player,
+				context.getLastIngredientCard(),  points,
+				target, card, context.getLastSeason(), context.getLastYear());
+		context.clearNeeded();
+	}
+	
+
+	/**
+	 * Execute a mole attack
+	 * @param target target of the attack
+	 */
+	public void chooseMoleAttack(Player target) {
+		if(!context.getNeededPlayer().equals(this) 
+				|| context.getNeededChoice() != Choice.MOLE) {
+			return;
+		}
+		int points = allyCard.getValue(AllyMethod.MOLE, context.getSeason());
+		if(points >= 0) {
+			int menhir = target.getMenhir();
+			if(points > menhir) {
+				points = menhir;
+			}
+			// Execute action
+			target.setMenhir(menhir - points);
+			// log the action to the context
+			context.setLastAction(Action.MOLE, this,
+					null,  points,
+					target, allyCard, context.getSeason(), context.getYear());
+			context.clearNeeded();
+			// Remove ally card
+			allyCard = null;
+			
+		}
+	}
+	
+	
+	//////////////////// IngredientCards : Attributes ////////////////////
+	
+	/**
+	 * Contains the four card that the player has in his hand
+	 */
+	private ArrayList<IngredientCard> ingredientCards;
+	
+	//////////////////// IngredientCards : Methods ////////////////////
+
+	/**
+	 * Put a new card in the hand of the player
+	 */
+	protected void drawIngredientCard() {
+		if(ingredientCards.size() >= 4) {
+			return;
+		}
+		ingredientCards.add(new IngredientCard(context));
+	}
+	
+	
+	/**
+	 * Return the list of ingredient cards
+	 * @return ArrayList of IngredientCard
+	 */
+	public ArrayList<IngredientCard> getIngredientCards() {
+		// We create another list to be sure no one edit it
+		// However IngredientCard will still be editable but it should be protected
+		ArrayList<IngredientCard> newList = new ArrayList<IngredientCard>();
+		for(int i=0; i < ingredientCards.size() ; i++) {
+			newList.add(ingredientCards.get(i));
+		}
+		return newList;
+	}
+	
+	/**
+	 * Get a ingredient card data from its id
+	 * @param cardID the id of the card from 0 to getIngredientCardCount()
+	 * @return the ingredient card, can be null
+	 */
+	public IngredientCard getIngredientCard(int cardID) {
+		if(cardID >= 0 && cardID < ingredientCards.size()) {
+			return ingredientCards.get(cardID);
+		}
+		return null;
+	}
+	
+	/**
+	 * Get the number of ingredient cards
+	 * @return the ingredient cards count
+	 */
+	public int getIngredientCardCount() {
+		return ingredientCards.size();
+	}
+	
+	/**
+	 * Get ingredient card ID from its object
+	 * @param card The ingredient card
+	 * @return the card id or -1 if the element is not inside
+	 */
+	public int getIngredientCardID(IngredientCard card) {
+		return ingredientCards.indexOf(card);
+	}
+	
+	//////////////////// AllyCards : Attributes ////////////////////	
+
+	/**
+	 * Contain an ally card if the player got one
+	 * If not : null
+	 */
+	private AllyCard allyCard = null;
+
+	//////////////////// AllyCards : Methods ////////////////////
+	
+	/**
+	 * Get the ingredient card of the player
+	 * @return the player, can be null
+	 */
+	public AllyCard getAllyCard() {
+		return allyCard;
+	}
+	
+	/**
+	 * Tell if the player has an ally card
+	 * @return true if the player has an ally card
+	 */
+	public boolean hasAllyCard() {
+		return allyCard != null;
+	}
+	
+	/**
+	 * Tell if the player has the given ally card
+	 * @param card The ally card
+	 * @return true if user has this card
+	 */
+	public boolean hasAllyCard(AllyCard card) {
+		return allyCard.equals(card);
+	}	
 
 }

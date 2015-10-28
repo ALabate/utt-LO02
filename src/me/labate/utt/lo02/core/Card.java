@@ -2,6 +2,7 @@ package me.labate.utt.lo02.core;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 import me.labate.utt.lo02.core.Game.Season;
 
 public abstract class Card {
@@ -22,15 +23,15 @@ public abstract class Card {
 	 */
 	public Card(Game context, int[][][] deck) {
 		this.context = context;
-		
+
 		// Create the list of 'not used card' if necessary
-		if(!context.cardLeft.containsKey(getClass().getName())) {
-			context.cardLeft.put(getClass().getName(), new ArrayList<Integer>());
+		if(!context.getCardsLeft().containsKey(getClass().getName())) {
+			context.getCardsLeft().put(getClass().getName(), new ArrayList<Integer>());
 			for(int i = 0; i < deck.length ; i++) {
-				context.cardLeft.get(getClass().getName()).add(i);
+				context.getCardsLeft().get(getClass().getName()).add(i);
 			}
 		}
-		ArrayList<Integer> cardLeft = context.cardLeft.get(getClass().getName());
+		ArrayList<Integer> cardLeft = context.getCardsLeft().get(getClass().getName());
 		
 		// Pick a random card ID
 		Random rand = new Random();
@@ -39,7 +40,6 @@ public abstract class Card {
 
 		// Remove the card from left cards
 		cardLeft.remove(index);
-		
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public abstract class Card {
 	 * @return the value or -1 if the method is not on the card
 	 */
 	protected int getValue(int[][][] deck, int methodID, Season season) {
-		if(deck[cardID][methodID] == null)
+		if(deck[cardID][methodID] == null || seasonToID(season) == -1)
 			return -1;
 		return deck[cardID][methodID][seasonToID(season)];
 	}
