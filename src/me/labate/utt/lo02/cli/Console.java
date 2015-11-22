@@ -386,9 +386,17 @@ public class Console {
 	/**
 	 * Remove everything written in the console
 	 */
-	public static void clear() {
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+	public static void clear() {      
+		final String os = System.getProperty("os.name");        
+		if (os.contains("Windows"))
+		{
+			jumpLine(50); // User uses Windows     
+		}     
+		else   // User uses Linux/Unix System
+		{     
+			System.out.print("\033[H\033[2J");   
+			System.out.flush();   
+		}
 	}
 	
 
