@@ -1,4 +1,4 @@
-package me.labate.utt.lo02.cli;
+ package me.labate.utt.lo02.cli;
 
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.IngredientCard;
@@ -22,20 +22,57 @@ public class Cli {
 	// TODO And to fix the bug of showing twice the message on leprechaun
 	
 	public static void main(String[] args) {
-
-		boolean fullGame = true;
 		
+		// Let user set parameters.
+		// choose Fast or FullGame
+		HashMap<String, String> propositions = new HashMap<String, String>();
+		String question = "What kind of game do you want to play  :";
+		propositions.put("1", "Play a FastGame");
+		propositions.put("2", "Play a FullGame");
+		String answer = Console.question(question, propositions);
 		Game game;
-		if(fullGame) {
+		if(answer == "2") {
 			game = new FullGame();			
 		}
 		else {
 			game = new FastGame();
 		}
-		game.addHuman("Alabate");
-		game.addBot("John", 0);
-//		game.addHuman("Benoit");
-//		game.addBot("Bob", 0);
+		
+		// let user give how many players
+		//Console.clear();
+		propositions.clear();
+		question = "How many players in the game :";
+		for(Integer i = 2; i <= 6; i++)
+			propositions.put(i.toString(), i.toString() + " Players play this game");
+		answer = Console.question(question, propositions);
+		Integer nbrPlayer = Integer.valueOf(answer);
+		
+		// for each player, enter informations.
+		for(Integer i = 0; i < nbrPlayer;  i++)
+		{
+			Console.clear();
+			question = "Player number " + (i+1)  + " is Human or Bot";
+			propositions.clear();
+			propositions.put("h", "Human");
+			propositions.put("b", "Bot");
+			answer = Console.question(question, propositions);
+			String name =  Console.question("Name of player " + (i+1) + " :");
+			switch(answer)
+			{
+			case "h":
+				game.addHuman(name);
+				break;
+			case "b":
+				propositions.clear();
+				question = "Set the level of this Bot";
+				// let user give the level of bot player
+				for(Integer j = 0; j <= 10; j++)
+					propositions.put(j.toString(), "Level " + j.toString());
+				answer = Console.question(question, propositions);
+				game.addBot(name, Integer.valueOf(answer));
+				break;
+			}
+		}
 		
 		// Init
 		while(game.next()) {
@@ -43,7 +80,6 @@ public class Cli {
 				Player player = game.getNeededPlayer();
 				String playerName = player.getName();
 				int playerID = game.getPlayerID(player);
-				HashMap<String, String> propositions = new HashMap<String, String>();
 				switch(game.getNeededChoice()) {
 					case INGREDIENT:
 					{
@@ -56,11 +92,11 @@ public class Cli {
 						
 						// Ask question
 						propositions.clear();
-						String question = "What card do you want to play ?";
+						question = "Which card do you want to play ?";
 						for(int i = 1; i <= player.getIngredientCardCount() ; i++) {
 							propositions.put(String.valueOf(i), "Play the card number "+i);
 						}		
-						String answer = Console.question(playerName + ": " + question, propositions);
+						answer = Console.question(playerName + ": " + question, propositions);
 						
 						// Store answer
 						IngredientCard card = player.getIngredientCard(Integer.parseInt(answer) - 1);
@@ -113,10 +149,10 @@ public class Cli {
 		
 						// Ask question
 						propositions.clear();
-						String question = "What bonus do you want ?";
+						question = "What bonus do you want ?";
 						propositions.put("a", "One ally card");
 						propositions.put("s", "Two seeds");				
-						String answer = Console.question(playerName + ": " + question, propositions, "");
+						answer = Console.question(playerName + ": " + question, propositions, "");
 						// Execute answer
 						switch(answer) {
 						case "a":
@@ -152,10 +188,10 @@ public class Cli {
 							Console.showAllyCard(card);
 							// Ask question
 							propositions.clear();
-							String question = "Do you want to use your dog to defend yourself ?";
+							question = "Do you want to use your dog to defend yourself ?";
 							propositions.put("y", "Yes");
 							propositions.put("n", "No");	
-							String answer = Console.question(playerName + ": " + question, propositions, "");
+							answer = Console.question(playerName + ": " + question, propositions, "");
 							player.chooseDefend(answer.equals("y"));
 						}
 						else {
@@ -191,14 +227,14 @@ public class Cli {
 					Console.showPublicData(game);
 					Console.jumpLine(3);
 					propositions.clear();
-					String question = "Who wants to attack with his mole or want to see his ally card ?";
+					question = "Who wants to attack with his mole or want to see his ally card ?";
 					for(int i = 1; i <= game.getPlayerCount() ; i++) {
 						if(!game.getPlayer(i-1).isBot() &&  game.getPlayer(i-1).getAllyCard() != null) {
 							propositions.put(String.valueOf(i), game.getPlayer(i-1).getName());
 						}
 					}
 					propositions.put("n", "No one");
-					String answer = Console.question("Everyone: " + question, propositions, "n");
+					answer = Console.question("Everyone: " + question, propositions, "n");
 					// Show ally card
 					if(!answer.equals("n")) {
 						Player player2 = game.getPlayer(Integer.parseInt(answer) - 1);
@@ -279,3 +315,4 @@ public class Cli {
 		
 	}
 }
+
