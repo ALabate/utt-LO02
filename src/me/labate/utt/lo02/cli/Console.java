@@ -140,8 +140,8 @@ public class Console {
 		for(int i = 0 ; i < playerCount ; i++) {
 			// Format name and add space margin
 			String name = context.getPlayer(i).getName();
-			if(name.length() > 20) {
-				name = name.substring(0, 20);
+			if(name.length() > 19) {
+				name = name.substring(0, 19);
 			}
 			name =  " " + name + " ";
 			
@@ -213,7 +213,7 @@ public class Console {
 		}
 		System.out.println();
 		
-		// Print If he have an ally card
+		// Print If he has an ally card
 		System.out.print("|");
 		for(int i = 0 ; i < playerCount ; i++) {
 			String text = " Ally card: " + (context.getPlayer(i).hasAllyCard()?"Yes":"No");
@@ -267,7 +267,11 @@ public class Console {
 		
 		// Print ingame date
 		System.out.print("|");
-		String text = " Season '" + context.getSeason().toString().toLowerCase() + "' of year " + (context.getYear()+1) + "/" + context.getYearCount() + " " ;
+		String text;
+		if(context.getYear() < context.getYearCount())
+			text = " Season '" + context.getSeason().toString().toLowerCase() + "' of year " + (context.getYear()+1) + "/" + context.getYearCount() + " " ;
+		else
+			text = "Finish";
 		String ctext = "";
 		int textBegin = (23*playerCount -1 -text.length())/2;
 		//Complete before
@@ -351,7 +355,25 @@ public class Console {
 	}
 
 	/**
-	 * Let the user see what happend by asking him to press any key to continue
+	 * Ask a simple question by printing the question
+	 * @return what the user will tap
+	 * @param question : what you want to ask
+	 * @param lenght : the length max of the answer
+	 */
+	public static String question(String question){
+		String answer = "";
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		// print question
+		System.out.println(question);
+		// read the answer
+		answer = in.nextLine();
+		// limit length 
+		return answer;
+	}
+	
+	/**
+	 * Let the user see what happened by asking him to press any key to continue
 	 */
 	public static void waitToContinue(String playerName) {
 		Console.jumpLine(1);
@@ -390,7 +412,8 @@ public class Console {
 		final String os = System.getProperty("os.name");        
 		if (os.contains("Windows"))
 		{
-			jumpLine(50); // User uses Windows     
+			jumpLine(50); // User uses Windows
+			System.out.flush();
 		}     
 		else   // User uses Linux/Unix System
 		{     
@@ -444,7 +467,7 @@ public class Console {
 						if(originalPoints != game.getLastPoints() || defendPoints >= 0) {
 							System.out.println(name + " try to stole " + originalPoints + " seeds from " + targetName + " but");
 							// If target defend himself
-							System.out.println("Console:416:"+defendPoints);
+							//System.out.println("Console:416:"+defendPoints); // TODO explain me why ?
 							if(defendPoints >= 0) {
 								System.out.println("\t"+ targetName + " defend himself with " + defendPoints + " dogs");
 								originalPoints -= defendPoints;							
