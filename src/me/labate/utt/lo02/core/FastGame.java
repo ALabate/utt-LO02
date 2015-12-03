@@ -2,8 +2,6 @@ package me.labate.utt.lo02.core;
 
 
 public class FastGame extends Game {
-
-	// TODO add constraint 2 to 6 players
 	
 	/**
 	 * Current player id
@@ -25,7 +23,14 @@ public class FastGame extends Game {
 		// The init season is used to give cards to players
 		setSeason(Season.INIT);
 		
-		//TODO finish him !
+		// for each player, reset points.
+		int i = 0;
+		while(this.getPlayer(i) != null){
+			this.getPlayer(i).reset();
+			i++;
+		}
+		// reset the stock of IngredientCard
+		this.getStockIngredient().reset();
 		
 	}
 
@@ -101,6 +106,13 @@ public class FastGame extends Game {
 			}
 		}
 		return getPlayer(id);
+	}
+
+
+	@Override
+	public boolean isFull() {
+		// this game is not full
+		return false;
 	}
 		
 }

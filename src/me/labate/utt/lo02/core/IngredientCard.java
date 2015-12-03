@@ -36,14 +36,15 @@ public class IngredientCard extends Card {
 		{{4, 0, 1, 1}, {1, 1, 3, 1}, {0, 0, 3, 3}},
 		{{2, 0, 1, 3}, {0, 3, 0, 3}, {1, 2, 2, 1}}}; 
 
-	/**
-	 * Constructor
-	 * @param context Context of the game
-	 */
-	public IngredientCard(Game context) {
-		super(context, deck);
-	}
 
+	/**
+	 * Constructor setting the ID
+	 * @param ID
+	 */
+	public IngredientCard(int ID)
+	{
+		super(ID);
+	}
 	/**
 	 * Get the card value for the given method on the given season
 	 * @param method The selected method
@@ -52,5 +53,8 @@ public class IngredientCard extends Card {
 	 */
 	public int getValue(IngredientMethod methodID, Season season) {
 		return getValue(deck, methodID.ordinal(), season);
+	}
+	public static int deckLength(){
+		return deck.length;
 	}
 }

@@ -3,8 +3,6 @@
  */
 package me.labate.utt.lo02.core;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * API to play one game without being able to break the rules
  */
@@ -18,8 +16,9 @@ public abstract class Game {
 	
 	Game() {
 		// Init vars
-		players = new ArrayList<Player>();
-		cardsLeft = new HashMap<String,ArrayList<Integer>>();
+		players = new ArrayList<Player>(); 
+		stockAlly = new StockAllyCard();
+		stockIngredient = new StockIngredientCard();
 	}
 
 	/**
@@ -33,6 +32,11 @@ public abstract class Game {
 	 * Reset the game and score without deleting players
 	 */
 	public abstract void reset();	
+	
+	/**
+	 * check if the game is established as Full or Fast
+	 */
+	public abstract boolean isFull();
 	
 	//////////////////// In game date : Attributes ////////////////////
 
@@ -273,7 +277,6 @@ public abstract class Game {
 			neededPlayer = player;
 		}
 	}
-	
 	/**
 	 * Set the fact that everything has been done
 	 */
@@ -287,7 +290,11 @@ public abstract class Game {
 	/**
 	 * Player list
 	 */
-	private ArrayList<Player> players;	
+	private ArrayList<Player> players;
+	/**
+	 * Max player in the game
+	 */
+	private final int maxPlayer = 6;
 
 	//////////////////// Player : Methods ////////////////////
 
@@ -331,6 +338,7 @@ public abstract class Game {
 	 * @param name The player name
 	 */
 	public void addHuman(String name) {
+		if(this.players.size() < this.maxPlayer) // cannot add more than maxPlayers
 		this.players.add(new HumanPlayer(this, name));
 	}
 	
@@ -340,6 +348,7 @@ public abstract class Game {
 	 * @param level The level of the bot from 0 to 10 with 0 the easier
 	 */
 	public void addBot(String name, int level) {
+		if(this.players.size() < this.maxPlayer) // cannot add more than  maxPlayers
 		this.players.add(new BotPlayer(this, name, level));
 	}
 	
@@ -348,15 +357,21 @@ public abstract class Game {
 	/**
 	 * List of deck that contain list of card not used
 	 */
-	private HashMap<String,ArrayList<Integer>> cardsLeft;
+	private StockAllyCard stockAlly;
+	private StockIngredientCard stockIngredient;
+	
 
 	//////////////////// Cards left : Methods ////////////////////
 
 	/**
-	 * @return the cardsLeft
+	 * @return the stockAlly
 	 */
-	protected HashMap<String,ArrayList<Integer>> getCardsLeft() {
-		return cardsLeft;
+	protected StockAllyCard getStockAlly() {
+		return stockAlly;
+	}
+	protected StockIngredientCard getStockIngredient()
+	{
+		return stockIngredient;
 	}
 
 

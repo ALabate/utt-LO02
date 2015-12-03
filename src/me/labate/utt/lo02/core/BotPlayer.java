@@ -5,13 +5,16 @@ package me.labate.utt.lo02.core;
 
 public class BotPlayer extends Player {
 
-
 	/**
 	 * Bot difficulty
 	 * from 0 to 10 with 0 the easier
 	 */
 	private int level = 5;
 	
+	public int getLevel() {
+		return level;
+	}
+
 	/**
 	 * Current used strategy
 	 */
@@ -20,7 +23,7 @@ public class BotPlayer extends Player {
 	/**
 	 * Current game context
 	 */
-	private Game context;
+	private Game context; // TODO ask @author Alabate why
 	
 	/**
 	 * Constructor
@@ -44,9 +47,13 @@ public class BotPlayer extends Player {
 		}
 		
 		// Select strategy
-		// As we have only one currently we use the random one
 		if(strategy == null) {
-			strategy = new RandomStrategy(context);
+			if(this.level == 0) // if level == 0, the player get the random strategy
+				strategy = new RandomStrategy(context);
+			else{
+				// TODO create other strategy
+				strategy = new ConstructiveStrategy(context); 
+			}
 		}
 		
 		//Use strategy to do choices
@@ -74,5 +81,10 @@ public class BotPlayer extends Player {
 	@Override
 	public boolean isBot() {
 		return true;
+	}
+	@Override
+	public void reset(){ // a bot has to reset his strategy
+		super.reset();
+		strategy = null;
 	}
 }

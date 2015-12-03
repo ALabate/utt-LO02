@@ -1,7 +1,5 @@
 package me.labate.utt.lo02.core;
 
-import java.util.ArrayList;
-import java.util.Random;
 
 import me.labate.utt.lo02.core.Game.Season;
 
@@ -16,32 +14,16 @@ public abstract class Card {
 	 * Card ID in the card deck
 	 */
 	protected int cardID;
-	
+
 	/**
-	 * Constructor
-	 * @param context Context of the game
+	 * create a card by setting the ID
+	 * @param carID ID of the card you want to create
 	 */
-	public Card(Game context, int[][][] deck) {
-		this.context = context;
-
-		// Create the list of 'not used card' if necessary
-		if(!context.getCardsLeft().containsKey(getClass().getName())) {
-			context.getCardsLeft().put(getClass().getName(), new ArrayList<Integer>());
-			for(int i = 0; i < deck.length ; i++) {
-				context.getCardsLeft().get(getClass().getName()).add(i);
-			}
-		}
-		ArrayList<Integer> cardLeft = context.getCardsLeft().get(getClass().getName());
-		
-		// Pick a random card ID
-		Random rand = new Random();
-		int index = rand.nextInt(cardLeft.size());
-		this.cardID = cardLeft.get(index);
-
-		// Remove the card from left cards
-		cardLeft.remove(index);
+	public Card(int cardID)
+	{
+		this.cardID = cardID;
+		this.context = null;
 	}
-	
 	/**
 	 * Convert season enum to season id
 	 * @param season the season enum value
