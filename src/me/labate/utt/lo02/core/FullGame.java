@@ -3,8 +3,7 @@ package me.labate.utt.lo02.core;
 import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 
 public class FullGame extends Game {
-	//TODO refill deck after a year
-	// TODO add constraint 2 to 6 players
+	
 	
 	/**
 	 * Current player id
@@ -26,10 +25,13 @@ public class FullGame extends Game {
 		// The init season is used to give cards to players
 		setSeason(Season.INIT);
 		
-		//TODO finish him !
-		
 		// We start with the 'init' player
-		currentPlayerID = -1;		
+		currentPlayerID = -1;
+		int i = 0;
+		while(this.getPlayer(i) != null){
+			this.getPlayer(i).reset();
+			i++;
+			}
 	}
 
 	@Override
@@ -42,12 +44,15 @@ public class FullGame extends Game {
 			setYearCount(getPlayerCount());
 			// Save scores and reset players
 			for(int playerID = 0; playerID < getPlayerCount(); playerID++) {
-				int score = getPlayer(playerID).getScore() + getPlayer(playerID).getMenhir();
+				getPlayer(playerID).updateScore();
+				// a player keep his seeds even after one year
+				int seeds = getPlayer(playerID).getSeed();
 				getPlayer(playerID).reset();
-				getPlayer(playerID).setScore(score);
+				getPlayer(playerID).setSeed(seeds);
 			}
-			// Reset card deck
-			getCardsLeft().clear();
+			// Reset card deck (refill and shuffle)
+			this.getStockIngredient().reset(); 
+			this.getStockAlly().reset();
 			// Give 4 cards to everyone
 			for(int cardNbr = 0 ; cardNbr < 4 ; cardNbr++) {
 				// To each players
@@ -74,6 +79,7 @@ public class FullGame extends Game {
 			}
 			
 			// Propose to all bot to use their mole attack
+			// TODO make it with a thread
 			if(getSeason() != Season.INIT && getLastAction() != Action.LEPRECHAUN_REQUEST) {
 				for(int i = 0; i < getPlayerCount() ; i++) {
 					if(getPlayer(i).getAllyCard() != null && getPlayer(i).getAllyCard().getValue(AllyMethod.MOLE, getSeason()) >= 0) {
@@ -140,6 +146,13 @@ public class FullGame extends Game {
 			return null;
 		}
 		return getPlayer(id);
+	}
+
+
+	@Override
+	public boolean isFull() {
+		// this game is full
+		return true;
 	}
 
 		

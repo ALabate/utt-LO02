@@ -133,7 +133,10 @@ public abstract class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	public void updateScore(){
+		this.score += this.menhir;
+		this.menhir = 0;
+	}
 	
 	//////////////////// Actions methods ////////////////////
 	
@@ -233,7 +236,7 @@ public abstract class Player {
 			case ALLY:
 			{
 				// Execute action
-				allyCard = new AllyCard(context);
+				allyCard = (AllyCard)context.getStockAlly().giveACard();
 				// log the action to the context
 				context.setLastAction(Action.BONUS_ALLY, this, null, -1, null, allyCard, context.getSeason(), context.getYear());
 				context.clearNeeded();
@@ -302,13 +305,9 @@ public abstract class Player {
 
 	/**
 	 * Execute a mole attack
-	 * @param target target of the attack
+	 * @param Player target of the attack
 	 */
 	public void chooseMoleAttack(Player target) {
-		if(!context.getNeededPlayer().equals(this) 
-				|| context.getNeededChoice() != Choice.MOLE) {
-			return;
-		}
 		int points = allyCard.getValue(AllyMethod.MOLE, context.getSeason());
 		if(points >= 0) {
 			int menhir = target.getMenhir();
@@ -321,7 +320,6 @@ public abstract class Player {
 			context.setLastAction(Action.MOLE, this,
 					null,  points,
 					target, allyCard, context.getSeason(), context.getYear());
-			context.clearNeeded();
 			// Remove ally card
 			allyCard = null;
 			
@@ -345,7 +343,7 @@ public abstract class Player {
 		if(ingredientCards.size() >= 4) {
 			return;
 		}
-		ingredientCards.add(new IngredientCard(context));
+		ingredientCards.add((IngredientCard)context.getStockIngredient().giveACard());
 	}
 	
 	

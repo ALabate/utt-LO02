@@ -23,8 +23,9 @@ public class AllyCard extends Card {
 	 * Constructor
 	 * @param context Context of the game
 	 */
-	public AllyCard(Game context) {
-		super(context, deck);
+
+	public AllyCard(int ID){
+		super(ID);
 	}
 
 	/**
@@ -35,6 +36,9 @@ public class AllyCard extends Card {
 	 */
 	public int getValue(AllyMethod methodID, Season season) {
 		return getValue(deck, methodID.ordinal(), season);
+	}
+	public static int deckLength(){
+		return deck.length;
 	}
 
 }
