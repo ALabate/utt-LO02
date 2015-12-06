@@ -21,7 +21,7 @@ public abstract class Card {
 	 * Constructor
 	 * @param context Context of the game
 	 */
-	public Card(Game context, int[][][] deck) {
+	protected Card(Game context, int[][][] deck) {
 		this.context = context;
 
 		// Create the list of 'not used card' if necessary
