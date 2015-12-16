@@ -14,7 +14,7 @@ public abstract class Game {
 
 	//////////////////// General : Methods ////////////////////
 	
-	Game() {
+	protected Game() {
 		// Init vars
 		players = new ArrayList<Player>(); 
 		stockAlly = new StockAllyCard();
@@ -118,7 +118,7 @@ public abstract class Game {
 	/**
 	 * Card used on the last action
 	 */
-	protected IngredientCard lastIngredientCard;
+	private IngredientCard lastIngredientCard;
 
 	/**
 	 * Seeds or menhir final value of the action
@@ -134,7 +134,7 @@ public abstract class Game {
 	/**
 	 * Ally card used on the last action
 	 */
-	protected AllyCard lastAllyCard;
+	private AllyCard lastAllyCard;
 	
 	/**
 	 * Season of the last action
@@ -373,8 +373,4 @@ public abstract class Game {
 	{
 		return stockIngredient;
 	}
-
-
-
-
 }

@@ -339,7 +339,7 @@ public abstract class Player {
 	/**
 	 * Put a new card in the hand of the player
 	 */
-	protected void drawIngredientCard() {
+	void drawIngredientCard() {
 		if(ingredientCards.size() >= 4) {
 			return;
 		}

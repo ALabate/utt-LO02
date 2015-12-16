@@ -19,7 +19,8 @@ public abstract class Card {
 	 * create a card by setting the ID
 	 * @param carID ID of the card you want to create
 	 */
-	public Card(int cardID)
+
+	protected Card(int cardID)
 	{
 		this.cardID = cardID;
 		this.context = null;
