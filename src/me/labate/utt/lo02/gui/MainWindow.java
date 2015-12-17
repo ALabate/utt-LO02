@@ -7,45 +7,48 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 
-public class MainWindow {
+import me.labate.utt.lo02.core.Game;
 
+public class MainWindow extends JFrame {
+
+	ScorePanel scorePanel;
+	
+	
+	
 	public MainWindow() {
+		super();
 		
-	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		JLabel label = new JLabel("lable 0");
+
 		JLabel label1 = new JLabel("lable 1");
 		label1.setBackground(Color.GREEN);
 		JLabel label2 = new JLabel("lable 2");
 		label2.setForeground(Color.BLUE);
-
-		//Layout component horizontally
-		JPanel scorePanel = new JPanel();
-		scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.X_AXIS));
-//		scorePanel.setBackground(Color.RED);
-		scorePanel.add(label);
-		scorePanel.add(label2);
 		
-		//Layout component vertically
+		
+		// Configure window
+		setTitle("Le jeu du Menhir");
+		this.setMinimumSize(new Dimension(320, 240));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
+		
+		// Create scroll area
+		JScrollPane scrollArea = new JScrollPane();
+		setContentPane(scrollArea);
+		
+		// Create subpanels
+//		statusPanel = new StatusPanel();
+		scorePanel = new ScorePanel();
+		
+		// Create main vertical layout
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		mainPanel.add(label1);
 		mainPanel.add(scorePanel);
-		
-		// Add a scroll bar if window is too low
-		JScrollPane scroller = new JScrollPane(mainPanel);
-		
-		//Put everything together
-		JFrame window = new JFrame();
-		Container container = window.getContentPane();
-		container.add(scroller, BorderLayout.CENTER);
-				
-		// Configure window
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.pack();
-		window.setVisible(true);
+		scrollArea.setViewportView(mainPanel);
 	}
-
+	
+	public void hydrate(Game game)
+	{
+		scorePanel.hydrate(game);
+	}
 }
