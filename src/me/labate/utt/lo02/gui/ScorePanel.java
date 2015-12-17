@@ -25,6 +25,7 @@ public class ScorePanel extends JPanel {
 		// Layout configuration
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setAlignmentX(CENTER_ALIGNMENT);
+		setBorder(new EmptyBorder(0, 0, 10, 0));
 		
 		
 	}
