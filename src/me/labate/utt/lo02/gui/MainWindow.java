@@ -21,9 +21,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	ScorePanel scorePanel;
 	StatusPanel statusPanel;
+	MolePanel molePanel;
 	
 	
 	
+
 	public MainWindow() {
 		super();
 		
@@ -42,9 +44,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Create scroll area
-		JScrollPane scrollArea = new JScrollPane();
-		setContentPane(scrollArea);
-		
+//		JScrollPane scrollArea = new JScrollPane();
+//		setContentPane(scrollArea);
+//		
 		// Create subpanels
 		scorePanel = new ScorePanel();
 		scorePanel.setAlignmentX(ScorePanel.CENTER_ALIGNMENT);
@@ -56,6 +58,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		moleButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		moleButton.setActionCommand("mole");
 		moleButton.addActionListener(this); 
+
+		molePanel = new MolePanel();
+		molePanel.setAlignmentX(ScorePanel.CENTER_ALIGNMENT);
 		
 		// Create main vertical layout
 		JPanel mainPanel = new JPanel();
@@ -63,13 +68,16 @@ public class MainWindow extends JFrame implements ActionListener {
 		mainPanel.add(statusPanel);
 		mainPanel.add(scorePanel);
 		mainPanel.add(moleButton);
-		scrollArea.setViewportView(mainPanel);
+		mainPanel.add(molePanel);
+//		scrollArea.setViewportView(mainPanel);
+		this.add(mainPanel);
 	}
 	
 	public void hydrate(Game game)
 	{
 		scorePanel.hydrate(game);
 		statusPanel.hydrate(game);
+		molePanel.hydrate(game);
 	}
 
 	@Override
@@ -78,5 +86,25 @@ public class MainWindow extends JFrame implements ActionListener {
 	    	System.out.println("Mole Attack ! ");
 	    }
 		
+	}
+	/**
+	 * @return the scorePanel
+	 */
+	public ScorePanel getScorePanel() {
+		return scorePanel;
+	}
+
+	/**
+	 * @return the statusPanel
+	 */
+	public StatusPanel getStatusPanel() {
+		return statusPanel;
+	}
+
+	/**
+	 * @return the molePanel
+	 */
+	public MolePanel getMolePanel() {
+		return molePanel;
 	}
 }

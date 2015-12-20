@@ -1,6 +1,7 @@
 package me.labate.utt.lo02.gui;
 
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -11,12 +12,13 @@ public class StatusPanel extends JPanel{
 	public StatusPanel() {
 		super();
 
-		this.add(new JLabel(""));
-	}
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		}
 
 	public void hydrate(Game game)
 	{
-		this.remove(0);
+		this.removeAll();
 		
 		if(game.getYear() < game.getYearCount())
 		{

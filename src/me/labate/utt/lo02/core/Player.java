@@ -33,7 +33,7 @@ public abstract class Player {
 		setName(name);
 		ingredientCards = new ArrayList<IngredientCard>();
 		reset();
-	}		
+	}
 
 	/**
 	 * Reset everything except name and context
@@ -44,6 +44,13 @@ public abstract class Player {
 		this.score = 0;
 		this.seed = 0;
 		this.menhir = 0;
+	}
+
+	/**
+	 * Get string return name
+	 */
+	public String toString() {
+		return this.getName();
 	}
 
 	/**
