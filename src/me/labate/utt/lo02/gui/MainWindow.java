@@ -15,16 +15,24 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import me.labate.utt.lo02.core.AllyCard;
 import me.labate.utt.lo02.core.Game;
+import me.labate.utt.lo02.core.IngredientCard;
+import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
+import me.labate.utt.lo02.core.Game.Action;
+import me.labate.utt.lo02.core.Game.Choice;
+import me.labate.utt.lo02.core.Game.Season;
 
 public class MainWindow extends JFrame implements ActionListener {
 
 	ScorePanel scorePanel;
 	StatusPanel statusPanel;
+	DeckPanel deckPanel;
 	MolePanel molePanel;
+	LastActionPanel lastActionPanel;
+	IngredientPanel ingredientPanel;
 	
-	
-	
+	JButton moleButton;
 
 	public MainWindow() {
 		super();
@@ -54,13 +62,21 @@ public class MainWindow extends JFrame implements ActionListener {
 		statusPanel = new StatusPanel();
 		statusPanel.setAlignmentX(ScorePanel.CENTER_ALIGNMENT);
 		
-		JButton moleButton = new JButton("Attaquer quelqu'un avec une taupe géante..");
+		moleButton = new JButton("Attaquer quelqu'un avec une taupe géante..");
 		moleButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		moleButton.setActionCommand("mole");
 		moleButton.addActionListener(this); 
 
 		molePanel = new MolePanel();
 		molePanel.setAlignmentX(ScorePanel.CENTER_ALIGNMENT);
+
+		lastActionPanel = new LastActionPanel();
+		lastActionPanel.setAlignmentX(ScorePanel.CENTER_ALIGNMENT);
+
+		ingredientPanel = new IngredientPanel();
+		ingredientPanel.setAlignmentX(ingredientPanel.CENTER_ALIGNMENT);
+
+		deckPanel = new DeckPanel();
 		
 		// Create main vertical layout
 		JPanel mainPanel = new JPanel();
@@ -69,6 +85,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		mainPanel.add(scorePanel);
 		mainPanel.add(moleButton);
 		mainPanel.add(molePanel);
+		mainPanel.add(lastActionPanel);
+		mainPanel.add(ingredientPanel);
+		mainPanel.add(deckPanel);
 //		scrollArea.setViewportView(mainPanel);
 		this.add(mainPanel);
 	}
@@ -77,13 +96,50 @@ public class MainWindow extends JFrame implements ActionListener {
 	{
 		scorePanel.hydrate(game);
 		statusPanel.hydrate(game);
-		molePanel.hydrate(game);
+		deckPanel.hydrate(game);
+		
+		// Middle panel selection
+		molePanel.setVisible(false);
+		lastActionPanel.setVisible(false);
+		ingredientPanel.setVisible(false);
+		
+		if(game.getLastAction() != Action.NOTHING)
+		{
+			lastActionPanel.hydrate(game);
+			lastActionPanel.setVisible(true);
+			game.clearLastAction();
+		}
+		else if(game.getNeededChoice() == Choice.INGREDIENT)
+		{
+			ingredientPanel.hydrate(game);
+			ingredientPanel.setVisible(true);
+			deckPanel.enableClick(true, game.getSeason());
+		}
+		else
+		{
+			System.out.print("Error cannot select panel : choice=");
+			System.out.println(game.getNeededChoice());
+		}
+		
+		// Hide mole button if there no ally card on the table
+		moleButton.setVisible(false);
+		for(int i=0; i<game.getPlayerCount(); i++)
+		{
+			if(game.getPlayer(i).hasAllyCard())
+			{
+				moleButton.setVisible(true);
+				break;
+			}
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if ("mole".equals(e.getActionCommand())) {
 	    	System.out.println("Mole Attack ! ");
+	    }
+	    if ("cardClick".equals(e.getActionCommand())) {
+	    	System.out.println("card click ! ");
 	    }
 		
 	}
@@ -106,5 +162,20 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public MolePanel getMolePanel() {
 		return molePanel;
+	}
+
+
+	/**
+	 * @return the lastActionPanel
+	 */
+	public LastActionPanel getLastActionPanel() {
+		return lastActionPanel;
+	}
+
+	/**
+	 * @return the deckPanel
+	 */
+	public DeckPanel getDeckPanel() {
+		return deckPanel;
 	}
 }

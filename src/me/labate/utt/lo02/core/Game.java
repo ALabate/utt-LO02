@@ -233,6 +233,18 @@ public abstract class Game {
 	public int getLastYear() {
 		return lastYear;
 	}
+
+	/**
+	 * Clear all the last action values
+	 */
+	public void clearLastAction() {
+		lastAction = Action.NOTHING;
+		lastPlayer = null;
+		lastIngredientCard = null;
+		lastPoints = -1;
+		lastTarget = null;
+		lastAllyCard = null;
+	}
 	
 
 	//////////////////// Needed : Attributes ////////////////////
