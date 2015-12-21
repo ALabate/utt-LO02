@@ -25,6 +25,7 @@ import me.labate.utt.lo02.core.Game.Season;
 
 public class MainWindow extends JFrame {
 
+	
 	ScorePanel scorePanel;
 	StatusPanel statusPanel;
 	DeckPanel deckPanel;

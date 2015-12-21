@@ -19,18 +19,9 @@ public class Controller implements ActionListener  {
 	MainWindow win;
 	Game game;
 	
-	public static void main(String[] args) {
-		Controller controller = new Controller();
-	}
-	
-	public Controller() {
+	public Controller(Game gameParam) {
 		
-		game = new FullGame();
-		game.addHuman("Bob");
-		game.addHuman("Albert");
-		game.addBot("Zero", 1);
-		game.addBot("Smith", 1);
-		
+		game = gameParam;
 		game.next();
 //		game.getNeededPlayer().playIngredientCard(game.getNeededPlayer().getIngredientCards().get(0), IngredientMethod.LEPRECHAUN, game.getPlayer(1));
 		
