@@ -31,7 +31,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	MolePanel molePanel;
 	LastActionPanel lastActionPanel;
 	IngredientPanel ingredientPanel;
-	
+
+	LeprechaunPanel leprechaunPanel;
+
 	JButton moleButton;
 
 	public MainWindow() {
@@ -76,6 +78,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		ingredientPanel = new IngredientPanel();
 		ingredientPanel.setAlignmentX(ingredientPanel.CENTER_ALIGNMENT);
 
+		leprechaunPanel = new LeprechaunPanel();
+		leprechaunPanel.setAlignmentX(leprechaunPanel.CENTER_ALIGNMENT);
+
 		deckPanel = new DeckPanel();
 		
 		// Create main vertical layout
@@ -87,6 +92,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		mainPanel.add(molePanel);
 		mainPanel.add(lastActionPanel);
 		mainPanel.add(ingredientPanel);
+		mainPanel.add(leprechaunPanel);
 		mainPanel.add(deckPanel);
 //		scrollArea.setViewportView(mainPanel);
 		this.add(mainPanel);
@@ -102,6 +108,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		molePanel.setVisible(false);
 		lastActionPanel.setVisible(false);
 		ingredientPanel.setVisible(false);
+		leprechaunPanel.setVisible(false);
 		
 		if(game.getLastAction() != Action.NOTHING)
 		{
@@ -137,9 +144,6 @@ public class MainWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	    if ("mole".equals(e.getActionCommand())) {
 	    	System.out.println("Mole Attack ! ");
-	    }
-	    if ("cardClick".equals(e.getActionCommand())) {
-	    	System.out.println("card click ! ");
 	    }
 		
 	}
@@ -177,5 +181,18 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public DeckPanel getDeckPanel() {
 		return deckPanel;
+	}
+	
+	/**
+	 * @return the leprechaunPanel
+	 */
+	public LeprechaunPanel getLeprechaunPanel() {
+		return leprechaunPanel;
+	}
+	/**
+	 * @return the ingredientPanel
+	 */
+	public IngredientPanel getIngredientPanel() {
+		return ingredientPanel;
 	}
 }
