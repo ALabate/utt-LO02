@@ -199,23 +199,26 @@ public class CardPanel extends JPanel implements MouseListener{
 		add(table.get(y).get(x), c);
 	}
 	
-	public void highlightSeason(Season season) {
+	public void highlightSeason(Season season, boolean link) {
 		
 		// Gray all other seasons
 		for (int m = 0; m < table.size() ; m++)
 		{
 			for (Season seasonI : Season.values()) {
-				if(season != seasonI && seasonI != Season.INIT)
+				if(table.get(m).size() > seasonI.ordinal())
 				{
-					table.get(m).get(seasonI.ordinal()).setForeground(Color.LIGHT_GRAY);
-				}
-				else if(season == seasonI && seasonI != Season.INIT && m != 0)
-				{
-					table.get(m).get(seasonI.ordinal()).setForeground(Color.BLUE);
-				}
-				else
-				{
-					table.get(m).get(seasonI.ordinal()).setForeground(Color.BLACK);
+					if(season != seasonI && seasonI != Season.INIT)
+					{
+						table.get(m).get(seasonI.ordinal()).setForeground(Color.LIGHT_GRAY);
+					}
+					else if(season == seasonI && seasonI != Season.INIT && m != 0 && link)
+					{
+						table.get(m).get(seasonI.ordinal()).setForeground(Color.BLUE);
+					}
+					else
+					{
+						table.get(m).get(seasonI.ordinal()).setForeground(Color.BLACK);
+					}
 				}
 			}
 		}

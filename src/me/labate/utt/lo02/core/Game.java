@@ -239,11 +239,6 @@ public abstract class Game {
 	 */
 	public void clearLastAction() {
 		lastAction = Action.NOTHING;
-		lastPlayer = null;
-		lastIngredientCard = null;
-		lastPoints = -1;
-		lastTarget = null;
-		lastAllyCard = null;
 	}
 	
 

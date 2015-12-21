@@ -116,18 +116,19 @@ public class LastActionPanel extends JPanel implements ActionListener {
 				card.highlightValue(AllyMethod.MOLE, game.getLastSeason());
 				break;
 			}
-			/*
 			case LEPRECHAUN_REQUEST:
 			{
-				System.out.println(name + " tried to stole");
-				System.out.println("\t" + game.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, game.getLastSeason()) + " seeds from " +  game.getLastTarget().getName());
-				System.out.println("Let see if " + game.getLastTarget().getName() + " will defend himself");
+				int originalPoints = game.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, game.getLastSeason());
+				text += game.getLastPlayer().getName() + " essaye de voler " + originalPoints + " graine(s) à " + game.getLastTarget().getName() + "<br/>";
+				text += "Cependant " + game.getLastTarget().getName() + " a des alliés. Peut-être pourront-ils le défendre...</html>";
+				
+				card = new CardPanel(game.getLastIngredientCard());
+				card.highlightValue(IngredientMethod.LEPRECHAUN, game.getLastSeason());
 				break;
 			}
-		*/
 			default:
 				text = "<html><h1>Dernière action</h1>"
-						+ "Rien ne s'est passé..</html>";
+						+ "Impossible de savoir ce qu'il s'est passé..</html>";
 				break;
 		}
 		

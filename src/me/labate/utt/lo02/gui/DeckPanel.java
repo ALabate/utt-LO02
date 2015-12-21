@@ -33,6 +33,7 @@ public class DeckPanel extends JPanel{
 	
 	Player player = null;
 	ArrayList<CardPanel> list;
+	CardPanel allyCard = null;
 	ActionListener clickListener = null;
 	
 	public DeckPanel() {
@@ -90,7 +91,8 @@ public class DeckPanel extends JPanel{
 		}
 		if(player.hasAllyCard())
 		{
-			cardLine.add(new CardPanel(player.getAllyCard()));
+			allyCard = new CardPanel(player.getAllyCard());
+			cardLine.add(allyCard);
 		}
 	}
 
@@ -101,9 +103,15 @@ public class DeckPanel extends JPanel{
 		{ 
 			for (CardPanel card : list) {
 				card.enableClick(enable);
-				card.highlightSeason(season);
+				card.highlightSeason(season, true);
 			}
 		}
+	}
+
+	public void highlightAllySeason(Season season)
+	{
+		if(allyCard != null)
+			allyCard.highlightSeason(season, false);
 	}
 
 	public void setClickListener(ActionListener listener)

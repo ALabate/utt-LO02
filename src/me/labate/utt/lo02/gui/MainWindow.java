@@ -34,6 +34,7 @@ public class MainWindow extends JFrame {
 	BonusPanel bonusPanel;
 
 	LeprechaunPanel leprechaunPanel;
+	DefendPanel defendPanel;
 
 	JButton moleButton;
 
@@ -74,6 +75,9 @@ public class MainWindow extends JFrame {
 		leprechaunPanel = new LeprechaunPanel();
 		leprechaunPanel.setAlignmentX(leprechaunPanel.CENTER_ALIGNMENT);
 		
+		defendPanel = new DefendPanel();
+		defendPanel.setAlignmentX(defendPanel.CENTER_ALIGNMENT);
+		
 		bonusPanel = new BonusPanel();
 		bonusPanel.setAlignmentX(bonusPanel.CENTER_ALIGNMENT);
 
@@ -89,6 +93,7 @@ public class MainWindow extends JFrame {
 		mainPanel.add(lastActionPanel);
 		mainPanel.add(ingredientPanel);
 		mainPanel.add(leprechaunPanel);
+		mainPanel.add(defendPanel);
 		mainPanel.add(bonusPanel);
 		mainPanel.add(deckPanel);
 //		scrollArea.setViewportView(mainPanel);
@@ -127,6 +132,12 @@ public class MainWindow extends JFrame {
 			bonusPanel.hydrate(game);
 			selectMiddlePanel(bonusPanel);
 		}
+		else if(game.getNeededChoice() == Choice.DEFEND)
+		{
+			defendPanel.hydrate(game);
+			selectMiddlePanel(defendPanel);
+			deckPanel.highlightAllySeason(game.getSeason());
+		}
 		else
 		{
 			System.out.print("Error cannot select panel : choice=");
@@ -151,6 +162,7 @@ public class MainWindow extends JFrame {
 		lastActionPanel.setVisible(false);
 		ingredientPanel.setVisible(false);
 		leprechaunPanel.setVisible(false);
+		defendPanel.setVisible(false);
 		bonusPanel.setVisible(false);
 		
 		panel.setVisible(true);
@@ -208,5 +220,11 @@ public class MainWindow extends JFrame {
 	 */
 	public BonusPanel getBonusPanel() {
 		return bonusPanel;
+	}
+	/**
+	 * @return the defendPanel
+	 */
+	public DefendPanel getDefendPanel() {
+		return defendPanel;
 	}
 }

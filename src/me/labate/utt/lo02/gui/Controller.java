@@ -46,6 +46,8 @@ public class Controller implements ActionListener  {
 		win.getLastActionPanel().getContinueBtn().addActionListener(this);
 		win.getDeckPanel().setClickListener(this);
 		win.getBonusPanel().getFinishBtn().addActionListener(this);
+		win.getDefendPanel().getDefendBtn().addActionListener(this);
+		win.getDefendPanel().getDontDefendBtn().addActionListener(this);
 		
 		// Update data and draw on screen
 		win.hydrate(game);
@@ -113,6 +115,16 @@ public class Controller implements ActionListener  {
 	    	{
 	    		game.getNeededPlayer().chooseBonus(Bonus.ALLY);
 	    	}
+	    	win.hydrate(game);
+	    	win.setVisible(true);
+	    }
+	    else if("leprechaunDefend".equals(e.getActionCommand()) && game.getNeededPlayer() != null) {
+			game.getNeededPlayer().chooseDefend(true);
+	    	win.hydrate(game);
+	    	win.setVisible(true);
+	    }
+	    else if("leprechaunDontDefend".equals(e.getActionCommand()) && game.getNeededPlayer() != null) {
+			game.getNeededPlayer().chooseDefend(false);
 	    	win.hydrate(game);
 	    	win.setVisible(true);
 	    }
