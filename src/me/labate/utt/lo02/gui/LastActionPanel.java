@@ -103,25 +103,25 @@ public class LastActionPanel extends JPanel implements ActionListener {
 				text += "<u>" + game.getLastPlayer().getName() + "</u> a choisis <u>deux graines</u> comme bonus de départ</html>";
 				break;
 			}
+			case MOLE:
+			{
+				int moles = game.getLastAllyCard().getValue(AllyMethod.MOLE, game.getLastSeason());
+				text += "<u>" + game.getLastPlayer().getName() + "</u> a attaqué " + game.getLastTarget().getName() + " avec " + moles + " taupes géantes<br/>";
+				if(moles != game.getLastPoints()) {
+					text += "- mais " + game.getLastTarget().getName() + " n'avait que " + game.getLastPoints() + " menhir(s)<br/>";
+				}
+				text += "<u>" + game.getLastTarget().getName() + "</u> a perdu <u>" + game.getLastPoints() + " menhir(s)</u></html>";
+				
+				card = new CardPanel(game.getLastAllyCard());
+				card.highlightValue(AllyMethod.MOLE, game.getLastSeason());
+				break;
+			}
 			/*
 			case LEPRECHAUN_REQUEST:
 			{
 				System.out.println(name + " tried to stole");
 				System.out.println("\t" + game.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, game.getLastSeason()) + " seeds from " +  game.getLastTarget().getName());
 				System.out.println("Let see if " + game.getLastTarget().getName() + " will defend himself");
-				break;
-			}
-			case MOLE:
-			{
-				int moles = game.getLastAllyCard().getValue(AllyMethod.MOLE, game.getLastSeason());
-				System.out.println(name + " attacked " + game.getLastTarget().getName() + " with "+ moles + " mole");
-				Console.jumpLine(1);
-				Console.showAllyCard(game.getLastAllyCard());
-				Console.jumpLine(1);
-				if(moles != game.getLastPoints()) {
-					System.out.println("\tbut " + game.getLastTarget().getName() + " had only " + game.getLastPoints() + " menhirs");
-				}
-				System.out.println("\the destroyed " + game.getLastPoints() + " menhirs");
 				break;
 			}
 		*/

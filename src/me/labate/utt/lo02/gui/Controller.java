@@ -39,6 +39,10 @@ public class Controller implements ActionListener  {
 		
 		// Get actions
 		win.getMolePanel().getBackBtn().addActionListener(this);
+		win.getMolePanel().getNextBtn().addActionListener(this);
+		win.getMolePanel().getFinishBtn().addActionListener(this);
+		win.getMolePanel().getCancelBtn().addActionListener(this);
+		win.getMoleButton().addActionListener(this);
 		win.getLastActionPanel().getContinueBtn().addActionListener(this);
 		win.getDeckPanel().setClickListener(this);
 		win.getBonusPanel().getFinishBtn().addActionListener(this);
@@ -54,7 +58,24 @@ public class Controller implements ActionListener  {
 	    if ("moleBack".equals(e.getActionCommand())) {
 	    	win.getMolePanel().hydrate(game);
 	    }
-	    else if("lastActionContinue".equals(e.getActionCommand())) {
+	    else if ("moleFinish".equals(e.getActionCommand())) {
+	    	Player player = (Player)win.getMolePanel().humanCombo.getSelectedItem();
+	    	player.chooseMoleAttack((Player)win.getMolePanel().playerCombo.getSelectedItem());
+	    	win.hydrate(game);
+	    	win.setVisible(true);
+	    }
+	    else if ("moleNext".equals(e.getActionCommand())) {
+	    	win.getDeckPanel().hydrate(game, (Player)win.getMolePanel().getHumanCombo().getSelectedItem());
+	    	win.getDeckPanel().validate();
+	    	win.getDeckPanel().repaint();
+	    }
+	    else if ("moleStart".equals(e.getActionCommand())) {
+	    	win.getMolePanel().hydrate(game);
+    		win.selectMiddlePanel(win.getMolePanel());
+	    	win.setVisible(true);
+	    }
+	    else if("lastActionContinue".equals(e.getActionCommand())
+	    		|| "moleCancel".equals(e.getActionCommand())) {
 	    	game.next();
 	    	win.hydrate(game);
 	    	win.setVisible(true);
@@ -65,8 +86,7 @@ public class Controller implements ActionListener  {
 	    	{
 		    	if(panel.getClickedIMethod() == IngredientMethod.LEPRECHAUN)
 		    	{
-		    		win.getIngredientPanel().setVisible(false);
-		    		win.getLeprechaunPanel().setVisible(true);
+		    		win.selectMiddlePanel(win.getLeprechaunPanel());
 		    		win.getLeprechaunPanel().hydrate(game);
 		    		win.getLeprechaunPanel().setCard(panel.getIngredientCard());
 		    		win.getLeprechaunPanel().setMethod(panel.getClickedIMethod());
@@ -80,8 +100,6 @@ public class Controller implements ActionListener  {
 	    }
 	    else if("leprechaunFinish".equals(e.getActionCommand()) && game.getNeededPlayer() != null) {
 	    	LeprechaunPanel panel = win.getLeprechaunPanel();
-	    	System.out.println(game.getNeededPlayer());
-	    	System.out.println(panel.getPlayerCombo());
 			game.getNeededPlayer().playIngredientCard(panel.getCard(), panel.getMethod(), (Player)panel.getPlayerCombo().getSelectedItem());
 	    	win.hydrate(game);
 	    	win.setVisible(true);

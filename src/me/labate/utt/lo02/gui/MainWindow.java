@@ -23,7 +23,7 @@ import me.labate.utt.lo02.core.Game.Action;
 import me.labate.utt.lo02.core.Game.Choice;
 import me.labate.utt.lo02.core.Game.Season;
 
-public class MainWindow extends JFrame implements ActionListener {
+public class MainWindow extends JFrame {
 
 	ScorePanel scorePanel;
 	StatusPanel statusPanel;
@@ -39,13 +39,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	public MainWindow() {
 		super();
-		
-
-
-		JLabel label1 = new JLabel("lable 1");
-		label1.setBackground(Color.GREEN);
-		JLabel label2 = new JLabel("lable 2");
-		label2.setForeground(Color.BLUE);
 		
 		
 		// Configure window
@@ -67,8 +60,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		moleButton = new JButton("Attaquer quelqu'un avec une taupe géante..");
 		moleButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		moleButton.setActionCommand("mole");
-		moleButton.addActionListener(this); 
+		moleButton.setActionCommand("moleStart");
 
 		molePanel = new MolePanel();
 		molePanel.setAlignmentX(ScorePanel.CENTER_ALIGNMENT);
@@ -103,6 +95,13 @@ public class MainWindow extends JFrame implements ActionListener {
 		this.add(mainPanel);
 	}
 	
+	/**
+	 * @return the moleButton
+	 */
+	public JButton getMoleButton() {
+		return moleButton;
+	}
+
 	public void hydrate(Game game)
 	{
 		scorePanel.hydrate(game);
@@ -110,28 +109,23 @@ public class MainWindow extends JFrame implements ActionListener {
 		deckPanel.hydrate(game);
 		
 		// Middle panel selection
-		molePanel.setVisible(false);
-		lastActionPanel.setVisible(false);
-		ingredientPanel.setVisible(false);
-		leprechaunPanel.setVisible(false);
-		bonusPanel.setVisible(false);
 		
 		if(game.getLastAction() != Action.NOTHING)
 		{
 			lastActionPanel.hydrate(game);
-			lastActionPanel.setVisible(true);
+			selectMiddlePanel(lastActionPanel);
 			game.clearLastAction();
 		}
 		else if(game.getNeededChoice() == Choice.INGREDIENT)
 		{
 			ingredientPanel.hydrate(game);
-			ingredientPanel.setVisible(true);
+			selectMiddlePanel(ingredientPanel);
 			deckPanel.enableClick(true, game.getSeason());
 		}
 		else if(game.getNeededChoice() == Choice.BONUS)
 		{
 			bonusPanel.hydrate(game);
-			bonusPanel.setVisible(true);
+			selectMiddlePanel(bonusPanel);
 		}
 		else
 		{
@@ -151,12 +145,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    if ("mole".equals(e.getActionCommand())) {
-	    	System.out.println("Mole Attack ! ");
-	    }
+	public void selectMiddlePanel(JPanel panel)
+	{
+		molePanel.setVisible(false);
+		lastActionPanel.setVisible(false);
+		ingredientPanel.setVisible(false);
+		leprechaunPanel.setVisible(false);
+		bonusPanel.setVisible(false);
 		
+		panel.setVisible(true);
 	}
 	/**
 	 * @return the scorePanel

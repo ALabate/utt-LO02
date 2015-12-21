@@ -55,6 +55,11 @@ public class DeckPanel extends JPanel{
 			showCards(player);
 		}
 	}
+
+	public void hydrate(Game game, Player player)
+	{
+		showCards(player);
+	}
 	
 	public void showCards(Player player)
 	{

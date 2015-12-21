@@ -15,6 +15,8 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import me.labate.utt.lo02.core.AllyCard.AllyMethod;
+import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.Player;
 
@@ -75,7 +77,7 @@ public class MolePanel extends JPanel implements ActionListener {
 		this.add(buttonLine);
 		this.add(new JSeparator(JSeparator.HORIZONTAL));
 	}
-	
+
 	public void step2()
 	{
 		this.removeAll();
@@ -109,6 +111,29 @@ public class MolePanel extends JPanel implements ActionListener {
 		this.add(new JSeparator(JSeparator.HORIZONTAL));
 	}
 
+	public void stepNoMole()
+	{
+		this.removeAll();
+		this.add(new JSeparator(JSeparator.HORIZONTAL));
+		
+		// Remove current player from list
+		JLabel text = new JLabel("<html><h1>Attaque de taupe géante !</h1>"
+				+ "N'importe qui peut attaquer avec une taupe géante à tout moment.<br/>"
+				+ "Les taupes géantes détruisent les menhirs des ennemis.<br/><br/>"
+				+ "Vous n'avez pas de taupes !</html>");
+		text.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		this.add(text);
+		
+
+		JPanel buttonLine = new JPanel();
+		buttonLine.setLayout(new FlowLayout());
+		buttonLine.add(backBtn);
+		buttonLine.add(cancelBtn);
+		
+		this.add(buttonLine);
+		this.add(new JSeparator(JSeparator.HORIZONTAL));
+	}
+
 	public void hydrate(Game game)
 	{
 		// Hydrate fields
@@ -116,15 +141,11 @@ public class MolePanel extends JPanel implements ActionListener {
 		playerCombo.removeAllItems();
 		for(int i=0; i<game.getPlayerCount();i++)
 		{
-			if(!game.getPlayer(i).isBot())
+			if(!game.getPlayer(i).isBot() && game.getPlayer(i).hasAllyCard())
 			{
 				humanCombo.addItem(game.getPlayer(i));
 			}
 			playerCombo.addItem(game.getPlayer(i));
-		}
-		if(humanCombo.getItemCount() <= 1)
-		{
-			step2();
 		}
 		step1();
 	}
@@ -133,10 +154,16 @@ public class MolePanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if ("moleNext".equals(e.getActionCommand())) {
-			step2();
+	    	if(((Player)humanCombo.getSelectedItem()).getAllyCard().getValue(AllyMethod.MOLE, Season.SUMMER) < 0)
+	    	{
+	    		stepNoMole();
+	    	}
+	    	else
+	    	{
+				step2();
+	    	}
 			this.validate();
 			this.repaint();
-			// TODO update card panel at the same time
 	    }
 	    else if ("moleBack".equals(e.getActionCommand())) {
 			step1();
