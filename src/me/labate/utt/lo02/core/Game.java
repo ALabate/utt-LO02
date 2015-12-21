@@ -3,6 +3,7 @@
  */
 package me.labate.utt.lo02.core;
 import java.util.ArrayList;
+import java.util.Random;
 /**
  * API to play one game without being able to break the rules
  */
@@ -358,7 +359,13 @@ public abstract class Game {
 		if(this.players.size() < this.maxPlayer) // cannot add more than  maxPlayers
 		this.players.add(new BotPlayer(this, name, level));
 	}
-	
+	public void addBot(String string) {
+		//create a bot with a random level
+		Random rd = new Random();
+		if(this.players.size() < this.maxPlayer){ // cannot add more than  maxPlayers
+			this.players.add(new BotPlayer(this,string,rd.nextInt(11)));
+		}
+	}
 
 	//////////////////// Cards left : Attributes ////////////////////
 	/**
@@ -380,4 +387,6 @@ public abstract class Game {
 	{
 		return stockIngredient;
 	}
+
+	
 }
