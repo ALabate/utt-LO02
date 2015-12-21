@@ -12,6 +12,7 @@ import me.labate.utt.lo02.core.FullGame;
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player;
+import me.labate.utt.lo02.core.Player.Bonus;
 
 public class Controller implements ActionListener  {
 
@@ -24,7 +25,7 @@ public class Controller implements ActionListener  {
 	
 	public Controller() {
 		
-		game = new FastGame();
+		game = new FullGame();
 		game.addHuman("Bob");
 		game.addHuman("Albert");
 		game.addBot("Zero", 1);
@@ -40,6 +41,7 @@ public class Controller implements ActionListener  {
 		win.getMolePanel().getBackBtn().addActionListener(this);
 		win.getLastActionPanel().getContinueBtn().addActionListener(this);
 		win.getDeckPanel().setClickListener(this);
+		win.getBonusPanel().getFinishBtn().addActionListener(this);
 		
 		// Update data and draw on screen
 		win.hydrate(game);
@@ -81,6 +83,18 @@ public class Controller implements ActionListener  {
 	    	System.out.println(game.getNeededPlayer());
 	    	System.out.println(panel.getPlayerCombo());
 			game.getNeededPlayer().playIngredientCard(panel.getCard(), panel.getMethod(), (Player)panel.getPlayerCombo().getSelectedItem());
+	    	win.hydrate(game);
+	    	win.setVisible(true);
+	    }
+	    else if("bonusFinish".equals(e.getActionCommand()) && game.getNeededPlayer() != null) {
+	    	if(win.getBonusPanel().getBonusCombo().getSelectedIndex() == 0)
+	    	{
+	    		game.getNeededPlayer().chooseBonus(Bonus.SEEDS);
+	    	}
+	    	else
+	    	{
+	    		game.getNeededPlayer().chooseBonus(Bonus.ALLY);
+	    	}
 	    	win.hydrate(game);
 	    	win.setVisible(true);
 	    }

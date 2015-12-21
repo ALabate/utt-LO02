@@ -31,6 +31,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	MolePanel molePanel;
 	LastActionPanel lastActionPanel;
 	IngredientPanel ingredientPanel;
+	BonusPanel bonusPanel;
 
 	LeprechaunPanel leprechaunPanel;
 
@@ -80,6 +81,9 @@ public class MainWindow extends JFrame implements ActionListener {
 
 		leprechaunPanel = new LeprechaunPanel();
 		leprechaunPanel.setAlignmentX(leprechaunPanel.CENTER_ALIGNMENT);
+		
+		bonusPanel = new BonusPanel();
+		bonusPanel.setAlignmentX(bonusPanel.CENTER_ALIGNMENT);
 
 		deckPanel = new DeckPanel();
 		
@@ -93,6 +97,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		mainPanel.add(lastActionPanel);
 		mainPanel.add(ingredientPanel);
 		mainPanel.add(leprechaunPanel);
+		mainPanel.add(bonusPanel);
 		mainPanel.add(deckPanel);
 //		scrollArea.setViewportView(mainPanel);
 		this.add(mainPanel);
@@ -109,6 +114,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		lastActionPanel.setVisible(false);
 		ingredientPanel.setVisible(false);
 		leprechaunPanel.setVisible(false);
+		bonusPanel.setVisible(false);
 		
 		if(game.getLastAction() != Action.NOTHING)
 		{
@@ -121,6 +127,11 @@ public class MainWindow extends JFrame implements ActionListener {
 			ingredientPanel.hydrate(game);
 			ingredientPanel.setVisible(true);
 			deckPanel.enableClick(true, game.getSeason());
+		}
+		else if(game.getNeededChoice() == Choice.BONUS)
+		{
+			bonusPanel.hydrate(game);
+			bonusPanel.setVisible(true);
 		}
 		else
 		{
@@ -194,5 +205,11 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public IngredientPanel getIngredientPanel() {
 		return ingredientPanel;
+	}
+	/**
+	 * @return the bonusPanel
+	 */
+	public BonusPanel getBonusPanel() {
+		return bonusPanel;
 	}
 }

@@ -87,25 +87,23 @@ public class LastActionPanel extends JPanel implements ActionListener {
 						text += "- " + game.getLastTarget().getName() + " n'avait que " + game.getLastPoints() + " graine(s)<br/>";
 					}
 				}
-				text += "<br/><u>" + game.getLastPlayer().getName() + "</u> a volé <u>" + game.getLastPoints() + " graine(s)</u> à <u>" + game.getLastTarget().getName() + "</u><br/>";
+				text += "<br/><u>" + game.getLastPlayer().getName() + "</u> a volé <u>" + game.getLastPoints() + " graine(s)</u> à <u>" + game.getLastTarget().getName() + "</u></html>";
 
 				card = new CardPanel(game.getLastIngredientCard());
 				card.highlightValue(IngredientMethod.LEPRECHAUN, game.getLastSeason());
 				break;
 			}
-			/*
 			case BONUS_ALLY:
 			{
-				System.out.println(name + " chose as bonus");
-				System.out.println("\t1 ally card");
+				text += "<u>" + game.getLastPlayer().getName() + "</u> a choisis <u>une carte allié</u> comme bonus de départ</html>";
 				break;
 			}
 			case BONUS_SEEDS:
 			{
-				System.out.println(name + " chose as bonus");
-				System.out.println("\t2 seeds");
+				text += "<u>" + game.getLastPlayer().getName() + "</u> a choisis <u>deux graines</u> comme bonus de départ</html>";
 				break;
 			}
+			/*
 			case LEPRECHAUN_REQUEST:
 			{
 				System.out.println(name + " tried to stole");

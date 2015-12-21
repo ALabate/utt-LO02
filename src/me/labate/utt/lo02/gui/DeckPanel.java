@@ -79,7 +79,9 @@ public class DeckPanel extends JPanel{
 		}
 		if(player.getIngredientCardCount() > 0 && player.hasAllyCard())
 		{
-			cardLine.add(new JSeparator(JSeparator.VERTICAL));
+			JSeparator separator = new JSeparator(JSeparator.VERTICAL);
+			separator.setMaximumSize(new Dimension(10, 10));
+			cardLine.add(separator);
 		}
 		if(player.hasAllyCard())
 		{
