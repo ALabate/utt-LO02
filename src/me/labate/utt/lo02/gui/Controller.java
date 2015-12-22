@@ -39,6 +39,7 @@ public class Controller implements ActionListener  {
 		win.getBonusPanel().getFinishBtn().addActionListener(this);
 		win.getDefendPanel().getDefendBtn().addActionListener(this);
 		win.getDefendPanel().getDontDefendBtn().addActionListener(this);
+		win.getRankingPanel().getContinueBtn().addActionListener(this);
 		
 		// Update data and draw on screen
 		win.hydrate(game);
@@ -67,7 +68,7 @@ public class Controller implements ActionListener  {
     		win.selectMiddlePanel(win.getMolePanel());
 	    	win.setVisible(true);
 	    }
-	    else if("lastActionContinue".equals(e.getActionCommand())
+	    else if("continue".equals(e.getActionCommand())
 	    		|| "moleCancel".equals(e.getActionCommand())) {
 	    	game.next();
 	    	win.hydrate(game);

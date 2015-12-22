@@ -29,7 +29,7 @@ public class StartWindow extends JFrame implements ActionListener{
 		super(); // use the constructor of JFrame
 		
 		// Initialisation of TextField
-		name = new JTextField("Votre nom");
+		name = new JTextField("Humain");
 		name.setActionCommand("name has been entered");
 		name.addActionListener(this);
 		
@@ -49,7 +49,7 @@ public class StartWindow extends JFrame implements ActionListener{
 		typeGame = new JComboBox<String>();
 		typeGame.setAlignmentX(JComboBox.CENTER_ALIGNMENT);
 		typeGame.addItem("Partie Rapide");
-		typeGame.addItem("Partie Avancée");
+		typeGame.addItem("Partie AvancÃ©e");
 		typeGame.setActionCommand("Type Game selected");
 		typeGame.addActionListener(this);
 		

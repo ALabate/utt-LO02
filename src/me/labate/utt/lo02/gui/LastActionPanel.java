@@ -33,7 +33,7 @@ public class LastActionPanel extends JPanel implements ActionListener {
 
 		// Create buttons and input
 		continueBtn = new JButton("Continuer");
-		continueBtn.setActionCommand("lastActionContinue");
+		continueBtn.setActionCommand("continue");
 	}
 
 	public void hydrate(Game game)

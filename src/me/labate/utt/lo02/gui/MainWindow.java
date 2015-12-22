@@ -36,7 +36,7 @@ public class MainWindow extends JFrame {
 
 	LeprechaunPanel leprechaunPanel;
 	DefendPanel defendPanel;
-
+	RankingPanel rankingPanel;
 	JButton moleButton;
 
 	public MainWindow() {
@@ -81,6 +81,9 @@ public class MainWindow extends JFrame {
 		
 		bonusPanel = new BonusPanel();
 		bonusPanel.setAlignmentX(bonusPanel.CENTER_ALIGNMENT);
+		
+		rankingPanel = new RankingPanel();
+		rankingPanel.setAlignmentX(rankingPanel.CENTER_ALIGNMENT);
 
 		deckPanel = new DeckPanel();
 		
@@ -90,12 +93,15 @@ public class MainWindow extends JFrame {
 		mainPanel.add(statusPanel);
 		mainPanel.add(scorePanel);
 		mainPanel.add(moleButton);
+		
 		mainPanel.add(molePanel);
 		mainPanel.add(lastActionPanel);
 		mainPanel.add(ingredientPanel);
 		mainPanel.add(leprechaunPanel);
 		mainPanel.add(defendPanel);
 		mainPanel.add(bonusPanel);
+		mainPanel.add(rankingPanel);
+		
 		mainPanel.add(deckPanel);
 //		scrollArea.setViewportView(mainPanel);
 		this.add(mainPanel);
@@ -141,8 +147,8 @@ public class MainWindow extends JFrame {
 		}
 		else
 		{
-			System.out.print("Error cannot select panel : choice=");
-			System.out.println(game.getNeededChoice());
+			rankingPanel.hydrate(game);
+			selectMiddlePanel(rankingPanel);
 		}
 		
 		// Hide mole button if there no ally card on the table
@@ -165,6 +171,7 @@ public class MainWindow extends JFrame {
 		leprechaunPanel.setVisible(false);
 		defendPanel.setVisible(false);
 		bonusPanel.setVisible(false);
+		rankingPanel.setVisible(false);
 		
 		panel.setVisible(true);
 	}
@@ -227,5 +234,12 @@ public class MainWindow extends JFrame {
 	 */
 	public DefendPanel getDefendPanel() {
 		return defendPanel;
+	}
+
+	/**
+	 * @return the rankingPanel
+	 */
+	public RankingPanel getRankingPanel() {
+		return rankingPanel;
 	}
 }
