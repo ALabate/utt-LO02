@@ -274,6 +274,8 @@ public abstract class Player {
 		Player target = this;
 		Player player = context.getLastPlayer();
 		AllyCard card = null;
+		if(context.getLastIngredientCard() ==null)
+			System.out.println("null");
 		int points = context.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, context.getLastSeason());
 		
 		// Check if the player can defend

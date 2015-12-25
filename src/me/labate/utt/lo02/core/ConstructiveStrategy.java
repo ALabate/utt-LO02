@@ -3,131 +3,26 @@ package me.labate.utt.lo02.core;
 import java.util.ArrayList;
 
 
+
 import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player.Bonus;
 
-public class ConstructiveStrategy implements Strategy {
+public class ConstructiveStrategy extends AdvancedStrategy {
 
-	/**
-	 * Contain the current state of the game
-	 */
-	Game context;
 	/**
 	 * Constructor
 	 * @param context Context of the game
 	 */
 	public ConstructiveStrategy(Game context) {
-		this.context = context;
+		super(context);
 	}
 	@Override
-	public IngredientCard card() {
-		ArrayList<IngredientCard> hand = context.getNeededPlayer().getIngredientCards();
-		java.util.Iterator<IngredientCard> it = hand.iterator();
-		IngredientCard returnCard = hand.get(0);
-		int points = 0;
-		// for each card
-		while(it.hasNext()){
-			IngredientCard card = it.next();
-			
-			switch(context.getSeason()){
-			case AUTUMN:
-				switch(this.method()){ // depends on the method selected by the strategy.
-				// Choose the card which the higher points for the method selected and the season
-				case FERTILIZER:
-						if(card.getValue(IngredientMethod.FERTILIZER, Season.AUTUMN) > points){
-							points = card.getValue(IngredientMethod.FERTILIZER, Season.AUTUMN);
-							returnCard = card;
-						}
-					break;
-				case GIANT:
-						if(card.getValue(IngredientMethod.GIANT, Season.AUTUMN) > points){
-							points = card.getValue(IngredientMethod.GIANT, Season.AUTUMN);
-							returnCard = card;
-						}
-					break;
-				case LEPRECHAUN:
-							if(card.getValue(IngredientMethod.LEPRECHAUN, Season.AUTUMN) > points){
-								points = card.getValue(IngredientMethod.LEPRECHAUN, Season.AUTUMN);
-								returnCard = card;
-							}
-					break;
-				}
-				break;
-			case SPRING:
-				switch(this.method()){
-				case FERTILIZER:
-						if(card.getValue(IngredientMethod.FERTILIZER, Season.SPRING) > points){
-							points = card.getValue(IngredientMethod.FERTILIZER, Season.SPRING);
-							returnCard = card;
-						}
-					break;
-				case GIANT:
-						if(card.getValue(IngredientMethod.GIANT, Season.SPRING) > points){
-							points = card.getValue(IngredientMethod.GIANT, Season.SPRING);
-							returnCard = card;
-						}
-					break;
-				case LEPRECHAUN:
-							if(card.getValue(IngredientMethod.LEPRECHAUN, Season.SPRING) > points){
-								points = card.getValue(IngredientMethod.LEPRECHAUN, Season.SPRING);
-								returnCard = card;
-							}
-					break;
-				}
-				break;
-			case SUMMER:
-				switch(this.method()){
-				case FERTILIZER:
-						if(card.getValue(IngredientMethod.FERTILIZER, Season.SUMMER) > points){
-							points = card.getValue(IngredientMethod.FERTILIZER, Season.SUMMER);
-							returnCard = card;
-						}
-					break;
-				case GIANT:
-						if(card.getValue(IngredientMethod.GIANT, Season.SUMMER) > points){
-							points = card.getValue(IngredientMethod.GIANT, Season.SUMMER);
-							returnCard = card;
-						}
-					break;
-				case LEPRECHAUN:
-							if(card.getValue(IngredientMethod.LEPRECHAUN, Season.SUMMER) > points){
-								points = card.getValue(IngredientMethod.LEPRECHAUN, Season.SUMMER);
-								returnCard = card;
-							}
-					break;
-				}
-				break;
-			case WINTER:
-				switch(this.method()){
-				case FERTILIZER:
-						if(card.getValue(IngredientMethod.FERTILIZER, Season.WINTER) > points){
-							points = card.getValue(IngredientMethod.FERTILIZER, Season.WINTER);
-							returnCard = card;
-						}
-					break;
-				case GIANT:
-						if(card.getValue(IngredientMethod.GIANT, Season.WINTER) > points){
-							points = card.getValue(IngredientMethod.GIANT, Season.WINTER);
-							returnCard = card;
-						}
-					break;
-				case LEPRECHAUN:
-							if(card.getValue(IngredientMethod.LEPRECHAUN, Season.WINTER) > points){
-								points = card.getValue(IngredientMethod.LEPRECHAUN, Season.WINTER);
-								returnCard = card;
-							}
-					break;
-				}
-				break;
-			default: // other cases send null
-				returnCard = null;
-				break;
-			}
-		}
-		return returnCard;
+	public IngredientCard card() { 
+		// return the most effective card for the current season, the current player and the method chosen by this strategy.
+		return CardTheMostEffective(context.getNeededPlayer(), context.getSeason(), this.method());
 	}
-
+	
 	@Override
 	public IngredientMethod method() {
 		IngredientMethod method = null;
@@ -235,21 +130,6 @@ public class ConstructiveStrategy implements Strategy {
 		return method;
 	}
 
-	@Override
-	public Player target() {
-		// this strategy is not supposed to use Leprechaun method, but if it does, we choose the player who has more seeds
-		int targetID = 0,i = 0, maxSeeds = 0;
-		while(context.getPlayer(i) != null){
-			// compare all players except the one who is playing
-			if(context.getPlayer(i).getMenhir() > maxSeeds && context.getPlayer(i)!= context.getNeededPlayer()){
-				targetID = i;
-				maxSeeds = context.getPlayer(i).getMenhir();
-				// select the player who has the higher menhir's points
-			}
-			i++;
-		}
-		return context.getPlayer(targetID);
-	}
 
 	@Override
 	public Bonus bonus() {
@@ -267,22 +147,6 @@ public class ConstructiveStrategy implements Strategy {
 	public boolean moleAttack() {
 		// we are not suppose to have an ally card with this method
 		return false;
-	}
-
-	@Override
-	public Player moleAttackTarget() { // this method is not supposed to be used in this strategy, but if it does, we choose the player who has more menhir.
-		int targetID = 0,i = 0, maxMenhirs = 0;
-		while(context.getPlayer(i) != null){
-			// compare all players except the one who is playing
-			if(context.getPlayer(i).getMenhir() > maxMenhirs && context.getPlayer(i)!= context.getNeededPlayer()){
-				targetID = i;
-				maxMenhirs = context.getPlayer(i).getMenhir();
-				// select the player who has the higher menhir's points
-			}
-			i++;
-		}
-		return context.getPlayer(targetID);
-		// return the player selected
 	}
 
 }
