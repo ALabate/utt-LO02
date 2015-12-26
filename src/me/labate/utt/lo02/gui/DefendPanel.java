@@ -48,7 +48,8 @@ public class DefendPanel extends JPanel{
 		buttonLine.setLayout(new FlowLayout());
 		
     	if(game.getNeededPlayer().getAllyCard().getValue(AllyMethod.DOG, Season.SUMMER) < 0)
-    	{
+    	{ 
+    		// you have to make a disti
     		text += "Bien que vous ayez une carte allié, ce n'est pas des chiens de gardes. Vous n'avez donc pas de défense.</html>";
     		buttonLine.add(dontDefendBtn);
     	}

@@ -29,15 +29,7 @@ public class ConstructiveStrategy extends AdvancedStrategy {
 		switch(context.getSeason()){ // choice depends on season
 		case SPRING:
 			// first season we want to increase the number of our seeds
-			switch(((BotPlayer)context.getNeededPlayer()).getLevel()){
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
 				method = IngredientMethod.GIANT;
-				break;
-			default:
 				if(context.getNeededPlayer().getSeed() > 3){
 					method = IngredientMethod.FERTILIZER;
 				}
@@ -45,68 +37,29 @@ public class ConstructiveStrategy extends AdvancedStrategy {
 					method = IngredientMethod.GIANT;
 				}
 				break;
-			}
-			break;
 		case SUMMER:
 			//Second season we try to fertilize our seeds
-			switch(((BotPlayer)context.getNeededPlayer()).getLevel()){
-				// if level <= 3 choose Fertilizer anyway
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-				case 5:
 					method = IngredientMethod.FERTILIZER;
-					break;
-					// 3 < level < 7 check if our seeds number is not zero and choose giant if it is
-				default:
 					if(context.getNeededPlayer().getSeed() > 2){
 						method = IngredientMethod.FERTILIZER;
 					}
 					else{
 						method = IngredientMethod.GIANT;
 					}
-					break;
-			}
 			break;
 		case AUTUMN:
 			// Third season get more seed
-			switch(((BotPlayer)context.getNeededPlayer()).getLevel()){
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				// low levels
 				method = IngredientMethod.GIANT;
-				break;
-			default: // other high level, get seed only if we have not already enough seeds
-				if(context.getNeededPlayer().getSeed() > 4){
+				if(context.getNeededPlayer().getSeed() > 2){
 					method= IngredientMethod.FERTILIZER;
 				}
 				else{
 					method = IngredientMethod.GIANT;
 				}
-				break;
-			}
-			
-			
 			break;
 		case WINTER:
 			//Last season we try to fertilize our seeds
-			switch(((BotPlayer)context.getNeededPlayer()).getLevel()){
-				// if level <= 5 choose Fertilizer anyway
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-				case 5:
 					method = IngredientMethod.FERTILIZER;
-					break;
-					//high level
-				default:
 					// check if there is another year left
 					if(context.getYear() < context.getYearCount() - 1){
 						if(context.getNeededPlayer().getSeed() > 1){
@@ -120,8 +73,6 @@ public class ConstructiveStrategy extends AdvancedStrategy {
 					else{ // it's the last year of this game
 						method = IngredientMethod.FERTILIZER;
 					}
-					break;
-			}
 			break;
 		default: // other case send null
 			method = null;

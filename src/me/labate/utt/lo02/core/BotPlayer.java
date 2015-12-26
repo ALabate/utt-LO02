@@ -48,7 +48,18 @@ public class BotPlayer extends Player {
 		
 		// Select strategy
 		if(strategy == null) {
-			strategy = new AgressiveStrategy(context);
+			if(this.level <= 1){
+				strategy = new RandomStrategy(context);
+			}
+			else if(this.level <= 4){
+					this.strategy = new DefensiveStrategy(context);
+				}
+				else if(this.level <= 7){
+					this.strategy = new ConstructiveStrategy(context);
+				}
+				else{
+					this.strategy = new AgressiveStrategy(context);
+				}
 		}
 		
 		//Use strategy to do choices

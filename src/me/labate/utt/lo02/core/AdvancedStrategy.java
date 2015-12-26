@@ -9,7 +9,7 @@ import me.labate.utt.lo02.core.Player.Bonus;
  * @author Benoit
  * 
  */
-public class AdvancedStrategy implements Strategy {
+public abstract class AdvancedStrategy implements Strategy {
 
 	protected Game context;
 	
@@ -18,16 +18,11 @@ public class AdvancedStrategy implements Strategy {
 	}
 	
 	@Override
-	public IngredientCard card() { 
-		// return the most effective card for the current season, the current player and the method chosen by this strategy.
-		return CardTheMostEffective(context.getNeededPlayer(), context.getSeason(), this.method());
-	}
+	public abstract IngredientCard card();
 
 
 	@Override
-	public IngredientMethod method() {
-		return methodTheMostEffective(context.getNeededPlayer(), context.getSeason());
-	}
+	public abstract IngredientMethod method();
 
 	@Override
 	public Player target() {
@@ -51,7 +46,6 @@ public class AdvancedStrategy implements Strategy {
 			else
 				return false;
 		}
-		System.out.println("defend");
 		return false;
 	}
 
