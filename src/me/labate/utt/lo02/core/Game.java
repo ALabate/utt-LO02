@@ -10,6 +10,63 @@ import java.util.Random;
 public abstract class Game {
 	
 	public enum Season { INIT, SPRING, SUMMER, AUTUMN, WINTER };
+	/**
+	 * convert int to season
+	 * @param integer
+	 * @return season from integer
+	 */
+	public static Season intToSeason(int integer){
+		Season season;
+		switch(integer){
+		case 0:
+			season = Season.INIT;
+			break;
+		case 1:
+			season = Season.SPRING;
+			break;
+		case 2:
+			season = Season.SUMMER;
+			break;
+		case 3:
+			season = Season.AUTUMN;
+			break;
+		case 4:
+			season = Season.WINTER;
+			break;
+		default:
+				season = Season.INIT; 
+		}
+		return season;
+	}
+	/**
+	 * convert season to int
+	 * @param season
+	 * @return int from season
+	 */
+	public static int seasonToInt(Season season){
+		int integer;
+		switch(season){
+		case INIT:
+			integer = 0;
+			break;
+		case SPRING:
+			integer = 1;
+			break;
+		case SUMMER:
+			integer = 2;
+			break;
+		case AUTUMN:
+			integer = 3;
+			break;
+		case WINTER:
+			integer = 4;
+			break;
+		default:
+			integer = -1;
+			break;
+		}
+		return integer;
+	}
 	public enum Choice { NOTHING, BONUS, INGREDIENT, DEFEND, MOLE };
 	public enum Action { NOTHING, GIANT, FERTILIZER, LEPRECHAUN_REQUEST, LEPRECHAUN, MOLE, BONUS_ALLY, BONUS_SEEDS };	
 

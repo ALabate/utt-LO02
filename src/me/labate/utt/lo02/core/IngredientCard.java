@@ -5,7 +5,26 @@ import me.labate.utt.lo02.core.Game.Season;
 public class IngredientCard extends Card {
 
 	public enum IngredientMethod { GIANT, FERTILIZER, LEPRECHAUN };
-
+	/**
+	 * convert int to IngredientMethod
+	 * @param integer
+	 * @return Ingredient method from int
+	 */
+	public static IngredientMethod intToIngredientMethod(int integer){
+		IngredientMethod method;
+		switch(integer){
+		case 0:
+			method = IngredientMethod.GIANT;
+			break;
+		case 1:
+			method = IngredientMethod.FERTILIZER;
+			break;
+		default:
+			method = IngredientMethod.LEPRECHAUN;
+			break;
+		}
+		return method;
+	}
 
 	/**
 	 * List of cards that contains methods that contains value for each season
