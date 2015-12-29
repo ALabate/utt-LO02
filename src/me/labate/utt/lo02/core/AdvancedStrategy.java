@@ -1,5 +1,7 @@
 package me.labate.utt.lo02.core;
 
+import java.util.Random;
+
 import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
@@ -11,8 +13,14 @@ import me.labate.utt.lo02.core.Player.Bonus;
  */
 public abstract class AdvancedStrategy implements Strategy {
 
+	/**
+	 * attribut which refers to game which is playing
+	 */
 	protected Game context;
-	
+	/**
+	 * constructor for this abstract strategy
+	 * @param context
+	 */
 	public AdvancedStrategy(Game context) {
 		this.context = context;
 	}
@@ -20,21 +28,23 @@ public abstract class AdvancedStrategy implements Strategy {
 	@Override
 	public abstract IngredientCard card();
 
-
+	
 	@Override
 	public abstract IngredientMethod method();
-
+	
+	
 	@Override
 	public Player target() {
 		return whoHasMoreSeed();
 	}
 
+	
 	@Override
 	public Bonus bonus() {
-		// always choose ally by default.
 		return Bonus.ALLY;
 	}
 
+	
 	@Override
 	public boolean defend() {
 		if(context.getNeededPlayer().hasAllyCard()){
@@ -50,14 +60,14 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 
 	@Override
-	public boolean moleAttack() {
+	public boolean moleAttack(Player playing) {
 		if(context.getNeededPlayer().hasAllyCard()){
 			AllyCard ally = context.getNeededPlayer().getAllyCard();
 			// check if ally is a dog
 			int points = ally.getValue(AllyMethod.DOG, context.getSeason());
 			if(points > 0) {
 				// check if someone has more menhir than this player
-				Player player = whoHasMoreMenhir();
+				Player player = whoHasMoreMenhir(playing);
 				if(player.getMenhir() > context.getNeededPlayer().getMenhir())
 					return true;
 			}
@@ -66,8 +76,8 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 
 	@Override
-	public Player moleAttackTarget() {
-		return whoHasMoreMenhir();
+	public Player moleAttackTarget(Player playing) {
+		return whoHasMoreMenhir(playing);
 		// return the player selected
 	}
 	/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*
@@ -79,14 +89,19 @@ public abstract class AdvancedStrategy implements Strategy {
 	 * 
 	 * @return player whose his number of menhirs is the highest except player who is playing
 	 */
-	public Player whoHasMoreMenhir(){
+	public Player whoHasMoreMenhir(Player playing){
 		int targetID = 0,i = 0, maxMenhirs = 0;
 		while(context.getPlayer(i) != null){
 			// compare all players except the one who is playing
-			if(context.getPlayer(i).getMenhir() > maxMenhirs && context.getPlayer(i)!= context.getNeededPlayer()){
+			if(context.getPlayer(i).getMenhir() > maxMenhirs && context.getPlayer(i)!=  playing){
 				targetID = i;
 				maxMenhirs = context.getPlayer(i).getMenhir();
 				// select the player who has the higher menhir's points
+			}
+			else if(context.getPlayer(i).getMenhir() == maxMenhirs && context.getPlayer(i)!=  playing){
+				Random rand = new Random();
+				if(rand.nextBoolean())
+					targetID = i;
 			}
 			i++;
 		}
@@ -134,7 +149,7 @@ public abstract class AdvancedStrategy implements Strategy {
 		int points =0;
 		for(int i = 1; i <= 4 ; i++){ // number of seasons
 			for(int j = 0; j < player.getIngredientCards().size() ; j++){ // number of cards
-				points += player.getIngredientCard(j).getValue(IngredientMethod.GIANT, Game.intToSeason(i)); // resolve this.
+				points += player.getIngredientCard(j).getValue(IngredientMethod.GIANT, Card.intToSeason(i)); // resolve this.
 			}
 		}
 		return points;
@@ -147,7 +162,7 @@ public abstract class AdvancedStrategy implements Strategy {
 		int points =0;
 		for(int i = 1; i <= 4 ; i++){ // number of seasons
 			for(int j = 0; j < player.getIngredientCards().size()  ; j++){ // number of cards
-				points += player.getIngredientCard(j).getValue(IngredientMethod.FERTILIZER, Game.intToSeason(i)); // resolve this.
+				points += player.getIngredientCard(j).getValue(IngredientMethod.FERTILIZER, Card.intToSeason(i)); // resolve this.
 			}
 		}
 		return points;
@@ -160,7 +175,7 @@ public abstract class AdvancedStrategy implements Strategy {
 		int points =0;
 		for(int i = 1; i <= 4 ; i++){ // number of seasons
 			for(int j = 0; j < player.getIngredientCards().size() ; j++){ // number of cards
-				points += player.getIngredientCard(j).getValue(IngredientMethod.LEPRECHAUN, Game.intToSeason(i)); // resolve this.
+				points += player.getIngredientCard(j).getValue(IngredientMethod.LEPRECHAUN, Card.intToSeason(i)); // resolve this.
 			}
 		}
 		return points;
@@ -180,6 +195,32 @@ public abstract class AdvancedStrategy implements Strategy {
 				if(points > maxPoints){
 					maxPoints = points;
 					method = IngredientCard.intToIngredientMethod(i);
+				}
+			}
+		}
+		return method;
+	}
+	/**
+	 *  give the most effective method to be played by looking at all the cards and all seasons
+	 * @param player, check all the cards
+	 * @return method to be played
+	 */
+	public static IngredientMethod methodTheMostEffective(Player player){
+		int points =0, maxPoints = 0;
+		IngredientMethod method = IngredientMethod.GIANT;
+		for(int k = 1; k <= 4 ; k++){ // season
+			for(int i = 0; i < 3 ; i++){ // number of method
+				for(int j = 0; j < player.getIngredientCards().size() ; j++){ // number of cards
+					points = player.getIngredientCard(j).getValue(IngredientCard.intToIngredientMethod(i), Card.intToSeason(k));
+					if(points > maxPoints){
+						maxPoints = points;
+						method = IngredientCard.intToIngredientMethod(i);
+					}
+					else if(points == maxPoints){
+						Random rand = new Random();
+						if(rand.nextBoolean()) // sometimes if we met a method as effective as another, just let hasard choose for us.
+							method = IngredientCard.intToIngredientMethod(i);
+					}
 				}
 			}
 		}
@@ -211,7 +252,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	 */
 	public static IngredientCard CardTheMostEffective(Player player,Season season){
 		int points =0, maxPoints = 0;
-		IngredientCard card = null;
+		IngredientCard card = player.getIngredientCard(0); // at least, return the fist card
 		for(int i = 0; i < player.getIngredientCards().size() ; i++){ // number of cards
 			for(int j = 0; j < 3 ; j++){ // number of method
 				points = player.getIngredientCard(i).getValue(IngredientCard.intToIngredientMethod(j), season);
@@ -232,7 +273,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	 */
 	public static IngredientCard CardTheMostEffective(Player player,Season season,IngredientMethod method){
 		int points =0, maxPoints = 0;
-		IngredientCard card = null;
+		IngredientCard card = player.getIngredientCard(0); // at least, return the fist card
 		for(int i = 0; i < player.getIngredientCards().size() ; i++){ // number of cards
 				points = player.getIngredientCard(i).getValue(method, season);
 				if(points > maxPoints){

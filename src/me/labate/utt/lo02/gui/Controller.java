@@ -23,7 +23,6 @@ public class Controller implements ActionListener  {
 		
 		game = gameParam;
 		game.next();
-//		game.getNeededPlayer().playIngredientCard(game.getNeededPlayer().getIngredientCards().get(0), IngredientMethod.LEPRECHAUN, game.getPlayer(1));
 		
 		// Construct window
 		win = new MainWindow();
@@ -40,6 +39,7 @@ public class Controller implements ActionListener  {
 		win.getDefendPanel().getDefendBtn().addActionListener(this);
 		win.getDefendPanel().getDontDefendBtn().addActionListener(this);
 		win.getRankingPanel().getContinueBtn().addActionListener(this);
+		win.getLeprechaunPanel().getFinishBtn().addActionListener(this);
 		
 		// Update data and draw on screen
 		win.hydrate(game);
@@ -84,7 +84,6 @@ public class Controller implements ActionListener  {
 		    		win.getLeprechaunPanel().hydrate(game);
 		    		win.getLeprechaunPanel().setCard(panel.getIngredientCard());
 		    		win.getLeprechaunPanel().setMethod(panel.getClickedIMethod());
-		    		win.getLeprechaunPanel().getFinishBtn().addActionListener(this);
 		    		return;
 		    	}
 		    	game.getNeededPlayer().playIngredientCard(panel.getIngredientCard(), panel.getClickedIMethod());

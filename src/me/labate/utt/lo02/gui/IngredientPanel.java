@@ -34,14 +34,13 @@ public class IngredientPanel extends JPanel {
 		this.removeAll();
 		this.add(new JSeparator(JSeparator.HORIZONTAL));
 		
-
+		Player player = game.getNeededPlayer();
 		JPanel textLine = new JPanel();
 		textLine.setLayout(new FlowLayout());
 		textLine.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		textLine.add(new JLabel("<html><h1>A toi de jouer " + game.getNeededPlayer() + " !</h1>"
+		textLine.add(new JLabel("<html><h1>A toi de jouer " + player + " !</h1>"
 				+ "Choisis une carte ingrédient dans ton deck de cartes et clique sur une des valeurs en bleu</html>"));
 		this.add(textLine);
-		
 		this.add(new JSeparator(JSeparator.HORIZONTAL));
 	}
 

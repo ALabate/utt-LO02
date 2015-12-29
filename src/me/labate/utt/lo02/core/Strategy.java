@@ -46,11 +46,11 @@ public interface Strategy {
 	 * Return if the strategy want to attack with mole
 	 * @return True if the strategy wants to atack
 	 */
-	public abstract boolean moleAttack();
+	public abstract boolean moleAttack(Player playing);
 	
 	/**
 	 * Return the target id of the mole attack
 	 * @return the target id of the mole attack
 	 */
-	public abstract Player moleAttackTarget();
+	public abstract Player moleAttackTarget(Player playing);
 }

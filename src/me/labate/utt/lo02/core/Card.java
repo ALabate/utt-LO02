@@ -2,7 +2,11 @@ package me.labate.utt.lo02.core;
 
 
 import me.labate.utt.lo02.core.Game.Season;
-
+/**
+ * Abtract class of a Card
+ * @author Alabate
+ *
+ */
 public abstract class Card {
 
 	/**
@@ -38,7 +42,23 @@ public abstract class Card {
 		default : return -1;
 		}
 	}
-	
+	/**
+	 * convert int to season
+	 * @param integer
+	 * @return season from integer
+	 */
+	public static Season intToSeason(int integer){
+		Season season;
+		switch(integer){
+		case 0: season = Season.INIT; break;
+		case 1:season = Season.SPRING;break;
+		case 2:season = Season.SUMMER;break;
+		case 3:season = Season.AUTUMN;break;
+		case 4:season = Season.WINTER;break;
+		default:season = Season.INIT; 
+		}
+		return season;
+	}
 	/**
 	 * Get the card value for the given method id on the given season
 	 * @param deck The deck of cards

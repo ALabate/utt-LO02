@@ -1,9 +1,18 @@
 package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.Game.Season;
-
+/**
+ * AllyCard as DogCard and MoleCard
+ * @author Alabate
+ *
+ */
 public class AllyCard extends Card {
 
+	/**
+	 * enum for the different kind of AllyCard
+	 * @author Alabate
+	 * 
+	 */
 	public enum AllyMethod { MOLE, DOG };
 
 	/**

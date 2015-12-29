@@ -1,9 +1,17 @@
 package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
-
+/**
+ * get the max of seeds and try to build menhirs.
+ * @author Benoit
+ *
+ */
 public class DefensiveStrategy extends AdvancedStrategy {
 
+	/**
+	 * constructor
+	 * @param context
+	 */
 	public DefensiveStrategy(Game context) {
 		super(context);
 		// TODO Auto-generated constructor stub

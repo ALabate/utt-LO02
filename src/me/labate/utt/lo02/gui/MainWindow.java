@@ -141,21 +141,34 @@ public class MainWindow extends JFrame {
 		}
 		else if(game.getNeededChoice() == Choice.DEFEND)
 		{
-			defendPanel.hydrate(game);
-			selectMiddlePanel(defendPanel);
-			deckPanel.highlightAllySeason(game.getSeason());
+			// we need to check if the player is a bot or no
+			if(game.getNeededPlayer().isBot()){
+				// in that case just lets see what we do
+				// TODO debug
+				// try to use LastActionPanel
+				lastActionPanel.hydrate(game);
+				selectMiddlePanel(lastActionPanel);
+				game.clearLastAction();
+			}
+			else {	
+				defendPanel.hydrate(game);
+				selectMiddlePanel(defendPanel);	
+				deckPanel.highlightAllySeason(game.getSeason());
+			}
 		}
+			
 		else
 		{
 			rankingPanel.hydrate(game);
 			selectMiddlePanel(rankingPanel);
 		}
 		
-		// Hide mole button if there no ally card on the table
+		// Hide mole button if there is no ally card on the table
+		// and no HumanPlayer who own AllyCard
 		moleButton.setVisible(false);
 		for(int i=0; i<game.getPlayerCount(); i++)
 		{
-			if(game.getPlayer(i).hasAllyCard())
+			if(game.getPlayer(i).hasAllyCard() && !game.getPlayer(i).isBot())
 			{
 				moleButton.setVisible(true);
 				break;

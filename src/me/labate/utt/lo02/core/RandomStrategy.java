@@ -61,14 +61,12 @@ public class RandomStrategy implements Strategy {
 		return (rand.nextInt(1) == 0);
 	}
 
-	@Override
-	public boolean moleAttack() {
+	public boolean moleAttack(Player playing) {
 		Random rand = new Random();
 		return (rand.nextInt(1) == 0);
 	}
 
-	@Override
-	public Player moleAttackTarget() {
+	public Player moleAttackTarget(Player playing) {
 		Random rand = new Random();
 		return context.getPlayer(rand.nextInt(context.getPlayerCount()));
 	}

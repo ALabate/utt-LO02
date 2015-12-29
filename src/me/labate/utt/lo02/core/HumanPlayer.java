@@ -1,6 +1,10 @@
 package me.labate.utt.lo02.core;
 
-
+/**
+ * user as player
+ * @author Alabate
+ *
+ */
 public class HumanPlayer extends Player {
 
 	public HumanPlayer(Game context, String name) {

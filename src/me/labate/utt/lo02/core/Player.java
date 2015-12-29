@@ -22,7 +22,6 @@ public abstract class Player {
 	private Game context;
 
 	//////////////////// General : Methods ////////////////////
-	
 	/**
 	 * Constructor
 	 * @param context Data about the game
@@ -32,16 +31,17 @@ public abstract class Player {
 		this.context = context;
 		setName(name);
 		ingredientCards = new ArrayList<IngredientCard>();
+		this.score = 0;
 		reset();
 	}
 
 	/**
 	 * Reset everything except name and context
+	 * @throws Exception 
 	 */
-	public void reset() {
+	public void reset()  {
 		this.allyCard = null;
 		this.ingredientCards.clear();
-		this.score = 0;
 		this.seed = 0;
 		this.menhir = 0;
 	}
@@ -274,8 +274,6 @@ public abstract class Player {
 		Player target = this;
 		Player player = context.getLastPlayer();
 		AllyCard card = null;
-		if(context.getLastIngredientCard() ==null)
-			System.out.println("null");
 		int points = context.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, context.getLastSeason());
 		
 		// Check if the player can defend
@@ -331,7 +329,6 @@ public abstract class Player {
 					target, allyCard, context.getSeason(), context.getYear());
 			// Remove ally card
 			allyCard = null;
-			
 		}
 	}
 	

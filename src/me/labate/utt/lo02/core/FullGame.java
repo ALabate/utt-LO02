@@ -1,7 +1,11 @@
 package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.AllyCard.AllyMethod;
-
+/**
+ * Advanced Game, whith the allyCards Rules
+ * @author Alabate
+ *
+ */
 public class FullGame extends Game {
 	
 	
@@ -9,7 +13,9 @@ public class FullGame extends Game {
 	 * Current player id
 	 */
 	private int currentPlayerID;
-	
+	/**
+	 * Constructor
+	 */
 	public FullGame() {
 		super();
 		reset();		
@@ -36,7 +42,6 @@ public class FullGame extends Game {
 
 	@Override
 	public boolean next() {
-		
 		// Initialization
 		if(getSeason() == Season.INIT && currentPlayerID == -1) {
 			currentPlayerID = getYear();
@@ -86,6 +91,7 @@ public class FullGame extends Game {
 						setNeeded(getPlayer(i), Choice.MOLE);
 						if(getPlayer(i).doAction()) {
 							clearNeeded();
+							this.toString();
 							return true;
 						}
 						clearNeeded();
@@ -127,7 +133,6 @@ public class FullGame extends Game {
 		if(getNeededChoice() == Choice.DEFEND) {
 			getNeededPlayer().doAction();
 		}
-		
 		return true;
 	}
 

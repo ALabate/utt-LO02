@@ -1,6 +1,10 @@
 package me.labate.utt.lo02.core;
 
-
+/**
+ * The "Partie Rapide" of the Menhir Game
+ * @author Benoit, Alabate
+ *
+ */
 public class FastGame extends Game {
 	
 	/**
@@ -8,6 +12,9 @@ public class FastGame extends Game {
 	 */
 	private int currentPlayerID;
 
+	/**
+	 * 
+	 */
 	public FastGame() {
 		super();
 		reset();
@@ -91,9 +98,14 @@ public class FastGame extends Game {
 		
 		// Let the bot play
 		getPlayer(currentPlayerID).doAction();
-		
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "FastGame [currentPlayerID=" + currentPlayerID + "]";
+	}
+
 
 	@Override
 	public Player getNextPlayer() {

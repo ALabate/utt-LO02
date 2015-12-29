@@ -1,13 +1,12 @@
 package me.labate.utt.lo02.core;
 
-import java.util.ArrayList;
-
-
-
-import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player.Bonus;
-
+/**
+ * construct menhir as faster as it can
+ * @author Benoit
+ *
+ */
 public class ConstructiveStrategy extends AdvancedStrategy {
 
 	/**
@@ -95,7 +94,7 @@ public class ConstructiveStrategy extends AdvancedStrategy {
 	}
 
 	@Override
-	public boolean moleAttack() {
+	public boolean moleAttack(Player playing) {
 		// we are not suppose to have an ally card with this method
 		return false;
 	}

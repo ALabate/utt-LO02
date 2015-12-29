@@ -1,7 +1,11 @@
 package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.Game.Season;
-
+/**
+ * Ingredients Card of the game
+ * @author Alabate
+ *
+ */
 public class IngredientCard extends Card {
 
 	public enum IngredientMethod { GIANT, FERTILIZER, LEPRECHAUN };
