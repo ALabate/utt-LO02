@@ -1,27 +1,21 @@
 package me.labate.utt.lo02.gui;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import me.labate.utt.lo02.cli.Console;
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.Player;
-import me.labate.utt.lo02.core.AllyCard.AllyMethod;
-import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 public class IngredientPanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8610163498010060825L;
 
 	public IngredientPanel() {
 		super();

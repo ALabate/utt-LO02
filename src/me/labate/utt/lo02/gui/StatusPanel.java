@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import me.labate.utt.lo02.core.Game;
 
+@SuppressWarnings("serial")
 public class StatusPanel extends JPanel{
 
 	public StatusPanel() {

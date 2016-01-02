@@ -6,9 +6,17 @@ import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 import me.labate.utt.lo02.core.Game.Action;
 import me.labate.utt.lo02.core.Game.Choice;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
-
+/**
+ * Abstract player, give the basic methods which a player needs to act in the game
+ * @author Benoit,Alabate
+ *
+ */
 public abstract class Player {
-
+	/**
+	 * the two types of bonuses
+	 * @author Alabate
+	 *
+	 */
 	public enum Bonus { ALLY, SEEDS };
 	
 	
@@ -36,8 +44,8 @@ public abstract class Player {
 	}
 
 	/**
-	 * Reset everything except name and context
-	 * @throws Exception 
+	 * Reset everything except name and context and score
+	 * 
 	 */
 	public void reset()  {
 		this.allyCard = null;
@@ -140,6 +148,9 @@ public abstract class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
+	/**
+	 * update ste score, add current menhir to the score of this player
+	 */
 	public void updateScore(){
 		this.score += this.menhir;
 		this.menhir = 0;
@@ -167,51 +178,7 @@ public abstract class Player {
 				|| !ingredientCards.contains(card)) {
 			return;
 		}
-
-		switch(method) {
-			case GIANT: // Give a number of seed
-			{
-				// Get data
-				int points = card.getValue(IngredientMethod.GIANT, context.getSeason());
-				// Execute action
-				seed += points;
-				// log the action to the context
-				context.setLastAction(Action.GIANT, this, card, points, null, null, context.getSeason(), context.getYear());
-				context.clearNeeded();
-				break;
-			}
-			case FERTILIZER: // Convert a number of seed to menhir
-			{
-				// Get data
-				int points = card.getValue(IngredientMethod.FERTILIZER, context.getSeason());
-				if(this.seed < points) {
-					points = this.seed;
-				}
-				// Execute action
-				seed -= points;
-				menhir += points;
-				// log the action to the context
-				context.setLastAction(Action.FERTILIZER, this, card, points, null, null, context.getSeason(), context.getYear());
-				context.clearNeeded();
-				break;
-			}
-			case LEPRECHAUN:
-			{
-				// Check if the target is a member of the game
-				if(context.getPlayerID(target) < 0) {
-					return;
-				}
-				// log the action to the context
-				context.setLastAction(Action.LEPRECHAUN_REQUEST, this, card, -1, target, null, context.getSeason(), context.getYear());
-				context.setNeeded(target, Choice.DEFEND);
-				// If target has no ally card or we are in fast game, we can do the attack now
-				if(target.getAllyCard() == null) {
-					// Execute action
-					target.chooseDefend(false);
-				}
-				break;
-			}
-		}
+		card.useEffect(this, target, IngredientCard.IngredientMethodToInt(method), context);
 		// Remove used card
 		ingredientCards.remove(card);
 	}
@@ -261,52 +228,31 @@ public abstract class Player {
 		}
 	}
 	
-
+	/**
+	 * must be used after a leprechaun request, choose the right effect to be used
+	 * @param defend : give true if you this player to use his DogCard
+	 */
 	public void chooseDefend(boolean defend) {
 		// Check if this choice is really needed and if the card belongs to this player
 		if(!context.getNeededPlayer().equals(this) 
 				|| context.getNeededChoice() != Choice.DEFEND) {
 			return;
 		}
-
-		
 		// Get some data
 		Player target = this;
 		Player player = context.getLastPlayer();
-		AllyCard card = null;
-		int points = context.getLastIngredientCard().getValue(IngredientMethod.LEPRECHAUN, context.getLastSeason());
 		
 		// Check if the player can defend
 		if(defend) {
-			
-			// Calculate points with defense
-			int defendPoints = target.getAllyCard().getValue(AllyMethod.DOG, context.getLastSeason());
-			if(defendPoints >= 0) {
-				points -= defendPoints;
-				if(points < 0) {
-					points = 0;
-				}
-			}
-			// save ally card
-			card = target.getAllyCard();
+			// use Dog effect
+			target.getAllyCard().useEffect(player, target, AllyMethod.DOG.ordinal(), context);
 			// Remove ally card
 			target.allyCard = null;
 			
 		}
-		// Check if the target has enough seeds
-		if(target.getSeed() < points) {
-			points = target.getSeed();
+		else{ // finish Leprechaun action
+			context.getLastIngredientCard().finishLeprechaun(player, target, context);
 		}
-			
-		// Execute the action
-		target.setSeed(target.getSeed() - points);
-		player.setSeed(player.getSeed() + points);
-
-		// log the action to the context
-		context.setLastAction(Action.LEPRECHAUN, player,
-				context.getLastIngredientCard(),  points,
-				target, card, context.getLastSeason(), context.getLastYear());
-		context.clearNeeded();
 	}
 	
 
@@ -315,21 +261,8 @@ public abstract class Player {
 	 * @param Player target of the attack
 	 */
 	public void chooseMoleAttack(Player target) {
-		int points = allyCard.getValue(AllyMethod.MOLE, context.getSeason());
-		if(points >= 0) {
-			int menhir = target.getMenhir();
-			if(points > menhir) {
-				points = menhir;
-			}
-			// Execute action
-			target.setMenhir(menhir - points);
-			// log the action to the context
-			context.setLastAction(Action.MOLE, this,
-					null,  points,
-					target, allyCard, context.getSeason(), context.getYear());
-			// Remove ally card
-			allyCard = null;
-		}
+		allyCard.useEffect(this, target, AllyMethod.MOLE.ordinal(), context);
+		allyCard = null;
 	}
 	
 	

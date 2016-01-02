@@ -2,10 +2,14 @@ package me.labate.utt.lo02.core;
 
 public class StockIngredientCard extends StockCard {
 
+	/**
+	 * constructor
+	 */
 	public StockIngredientCard() {
 		super();
 	}
 
+	
 	@Override
 	public void reset() {
 		{

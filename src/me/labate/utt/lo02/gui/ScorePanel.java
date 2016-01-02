@@ -1,21 +1,18 @@
 package me.labate.utt.lo02.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.Player;
 
+@SuppressWarnings("serial")
 public class ScorePanel extends JPanel {
 
 	public ScorePanel() {

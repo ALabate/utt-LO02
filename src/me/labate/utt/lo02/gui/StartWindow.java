@@ -18,6 +18,7 @@ import me.labate.utt.lo02.core.FastGame;
 import me.labate.utt.lo02.core.FullGame;
 import me.labate.utt.lo02.core.Game;
 
+@SuppressWarnings("serial")
 public class StartWindow extends JFrame implements ActionListener{
 
 	private JComboBox<Integer> nbPlayer; // choice for number of players
@@ -88,6 +89,7 @@ public class StartWindow extends JFrame implements ActionListener{
 	}
 	// start the app
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		StartWindow sw = new StartWindow();
 
 	}
@@ -121,6 +123,7 @@ public class StartWindow extends JFrame implements ActionListener{
 				}
 			}
 			// start the controller
+			@SuppressWarnings("unused")
 			Controller controller = new Controller(game);
 			dispose(); // destroy this window
 		}

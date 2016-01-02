@@ -17,6 +17,10 @@ import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 public class DefendPanel extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6284799628145527834L;
 	JButton defendBtn;
 	JButton dontDefendBtn;
 	

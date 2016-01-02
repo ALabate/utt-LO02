@@ -7,13 +7,9 @@ package me.labate.utt.lo02.core;
  */
 public class FastGame extends Game {
 	
-	/**
-	 * Current player id
-	 */
-	private int currentPlayerID;
 
 	/**
-	 * 
+	 * constructor
 	 */
 	public FastGame() {
 		super();

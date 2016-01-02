@@ -10,11 +10,6 @@ import me.labate.utt.lo02.core.Game.Season;
 public abstract class Card {
 
 	/**
-	 * Contain the current state of the game
-	 */
-	protected Game context;
-	
-	/**
 	 * Card ID in the card deck
 	 */
 	protected int cardID;
@@ -27,13 +22,12 @@ public abstract class Card {
 	protected Card(int cardID)
 	{
 		this.cardID = cardID;
-		this.context = null;
 	}
 	/**
 	 * Convert season enum to season id
 	 * @param season the season enum value
 	 */
-	protected int seasonToID(Season season) {
+	protected static int seasonToID(Season season) {
 		switch(season) {
 		case SPRING : return 0;
 		case SUMMER : return 1;
@@ -47,7 +41,7 @@ public abstract class Card {
 	 * @param integer
 	 * @return season from integer
 	 */
-	public static Season intToSeason(int integer){
+	protected static Season intToSeason(int integer){
 		Season season;
 		switch(integer){
 		case 0: season = Season.INIT; break;
@@ -82,5 +76,12 @@ public abstract class Card {
 	protected int getValue(int[][][] deck, Season season) {
 		return getValue(deck, 0, season);	
 	}
-	
+	/**
+	 * use the effect of the card
+	 * @param playing 	: palyer who is playing
+	 * @param target 	: player who is targeting
+	 * @param method 	: the card's method needed to be played, use the different converter method to convert them to int
+	 * @param context	: current game's data
+	 */
+	abstract void  useEffect(Player playing, Player target, int method, Game context );
 }

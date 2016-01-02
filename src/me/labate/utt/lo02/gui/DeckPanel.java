@@ -1,36 +1,26 @@
 package me.labate.utt.lo02.gui;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import javax.swing.Action;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import me.labate.utt.lo02.cli.Console;
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard;
 import me.labate.utt.lo02.core.Player;
-import me.labate.utt.lo02.core.AllyCard.AllyMethod;
-import me.labate.utt.lo02.core.Card;
-import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 
 public class DeckPanel extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2378396814507471427L;
 	Player player = null;
 	ArrayList<CardPanel> list;
 	CardPanel allyCard = null;

@@ -2,13 +2,7 @@ package me.labate.utt.lo02.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import me.labate.utt.lo02.core.FastGame;
-import me.labate.utt.lo02.core.FullGame;
 import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player;

@@ -1,31 +1,26 @@
 package me.labate.utt.lo02.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 
-import me.labate.utt.lo02.core.AllyCard;
 import me.labate.utt.lo02.core.Game;
-import me.labate.utt.lo02.core.IngredientCard;
-import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Game.Action;
 import me.labate.utt.lo02.core.Game.Choice;
-import me.labate.utt.lo02.core.Game.Season;
+
 
 public class MainWindow extends JFrame {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2334999391323336120L;
 	ScorePanel scorePanel;
 	StatusPanel statusPanel;
 	DeckPanel deckPanel;
@@ -39,6 +34,7 @@ public class MainWindow extends JFrame {
 	RankingPanel rankingPanel;
 	JButton moleButton;
 
+	@SuppressWarnings("static-access")
 	public MainWindow() {
 		super();
 		
@@ -143,9 +139,6 @@ public class MainWindow extends JFrame {
 		{
 			// we need to check if the player is a bot or no
 			if(game.getNeededPlayer().isBot()){
-				// in that case just lets see what we do
-				// TODO debug
-				// try to use LastActionPanel
 				lastActionPanel.hydrate(game);
 				selectMiddlePanel(lastActionPanel);
 				game.clearLastAction();

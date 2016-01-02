@@ -2,9 +2,6 @@ package me.labate.utt.lo02.gui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -12,7 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import me.labate.utt.lo02.core.Game;
@@ -22,6 +18,10 @@ import me.labate.utt.lo02.core.Player;
 
 public class LeprechaunPanel extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3260146273137281977L;
 	JButton finishBtn;
 	JComboBox<Player> playerCombo;
 	

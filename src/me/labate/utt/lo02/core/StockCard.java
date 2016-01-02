@@ -2,7 +2,11 @@ package me.labate.utt.lo02.core;
 
 import java.util.LinkedList;
 import java.util.Random;
-
+/**
+ * abstract stok of cards, as cards exist before they get drawn by a payer
+ * @author Benoit
+ *
+ */
 public abstract class StockCard {
 	
 	protected LinkedList<Card> stock = new LinkedList<Card>(); 
@@ -35,7 +39,7 @@ public abstract class StockCard {
 	 */
 	public abstract void reset();
 	/**
-	 * give the wich is is on the top of the stock
+	 * give the card which is is on the top of the stock
 	 * @return the card on the top of the stock or null if empty
 	 */
 	public Card giveACard() // return null if empty

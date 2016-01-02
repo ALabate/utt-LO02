@@ -14,11 +14,9 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import me.labate.utt.lo02.core.Game;
-import me.labate.utt.lo02.core.AllyCard.AllyMethod;
-import me.labate.utt.lo02.core.Game.Season;
-import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player;
 
+@SuppressWarnings("serial")
 public class RankingPanel extends JPanel{
 
 	JButton continueBtn;
@@ -66,8 +64,12 @@ public class RankingPanel extends JPanel{
 		        {
 		        	if(p1.getMenhir() > p2.getMenhir())
 		        		return -1;
-		        	if(p1.getMenhir() == p2.getMenhir())
-		        		return 0;
+		        	if(p1.getMenhir() == p2.getMenhir()){ // check the seeds
+		        		if(p1.getSeed() > p2.getSeed())
+		        			return -1;
+		        		if(p1.getSeed() == p2.getSeed())
+		        			return 0;	
+		        	}
 		        	return 1;
 		        }
 		    });
@@ -88,8 +90,12 @@ public class RankingPanel extends JPanel{
 	        {
 	        	if((p1.getMenhir()+p1.getScore()) > (p2.getMenhir()+p2.getScore()))
 	        		return -1;
-	        	if((p1.getMenhir()+p1.getScore()) == (p2.getMenhir()+p2.getScore()))
-	        		return 0;
+	        	if((p1.getMenhir()+p1.getScore()) == (p2.getMenhir()+p2.getScore())){
+	        		if(p1.getSeed() > p2.getSeed())
+	        			return -1;
+	        		if(p1.getSeed() == p2.getSeed())
+	        			return 0;
+	        	}
 	        	return 1;
 	        }
 	    });

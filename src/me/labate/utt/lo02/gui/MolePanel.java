@@ -2,7 +2,6 @@ package me.labate.utt.lo02.gui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,7 +11,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import me.labate.utt.lo02.core.AllyCard.AllyMethod;
@@ -22,6 +20,10 @@ import me.labate.utt.lo02.core.Player;
 
 public class MolePanel extends JPanel implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5885522801459004212L;
 	JButton cancelBtn;
 	JButton nextBtn;
 	JButton backBtn;

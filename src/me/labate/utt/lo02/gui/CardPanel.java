@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.Action;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,7 +22,6 @@ import javax.swing.border.LineBorder;
 
 import me.labate.utt.lo02.core.AllyCard;
 import me.labate.utt.lo02.core.AllyCard.AllyMethod;
-import me.labate.utt.lo02.core.Card;
 import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;

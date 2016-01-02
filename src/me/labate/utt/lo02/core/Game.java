@@ -71,6 +71,10 @@ public abstract class Game {
 	 * A year has 5 season (yes with the initialization turn)
 	 */
 	private Season season;
+	/**
+	 * Current player id
+	 */
+	protected int currentPlayerID;
 
 	//////////////////// In game date : Methods ////////////////////
 

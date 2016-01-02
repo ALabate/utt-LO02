@@ -10,10 +10,6 @@ public class FullGame extends Game {
 	
 	
 	/**
-	 * Current player id
-	 */
-	private int currentPlayerID;
-	/**
 	 * Constructor
 	 */
 	public FullGame() {
