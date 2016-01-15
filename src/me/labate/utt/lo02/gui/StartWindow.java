@@ -19,13 +19,23 @@ import me.labate.utt.lo02.core.FullGame;
 import me.labate.utt.lo02.core.Game;
 
 @SuppressWarnings("serial")
+/**
+ * Start window which creates a Game, Contains the main method to start the application
+ * @author Benoit
+ *
+ */
 public class StartWindow extends JFrame implements ActionListener{
 
 	private JComboBox<Integer> nbPlayer; // choice for number of players
 	private JComboBox<String> typeGame;  // choice for the type of game
 	private JTextField name;			 // where user type his name
+	/**
+	 * Finish button to start the game
+	 */
 	private JButton button;				 // button for launch the game
-	
+	/**
+	 * constructor
+	 */
 	public StartWindow() { // constructor
 		super(); // use the constructor of JFrame
 		
@@ -87,7 +97,10 @@ public class StartWindow extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-	// start the app
+	/**
+	 * Start the GUI program
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		@SuppressWarnings("unused")
 		StartWindow sw = new StartWindow();
