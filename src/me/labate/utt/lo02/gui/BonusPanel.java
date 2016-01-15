@@ -13,16 +13,26 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import me.labate.utt.lo02.core.Game;
-
+/**
+ * The Bonus Panel, it's whith this Panel user choose if he wants Seed or one AllyCard at the beginning of a year.
+ * @author Benoit,Alabate
+ *
+ */
 public class BonusPanel extends JPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3981619847669821563L;
+	/**
+	 * The button user can click on to make his choice
+	 */
 	JButton finishBtn;
+	/**
+	 *  The combo of choices the payer have
+	 */
 	JComboBox<String> bonusCombo;
 
+	/**
+	 * Constructor
+	 */
 	public BonusPanel() {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -36,7 +46,10 @@ public class BonusPanel extends JPanel{
 		bonusCombo.addItem("2 graines");
 		bonusCombo.addItem("Une carte allié");
 	}
-	
+	/**
+	 * refresh the panel
+	 * @param game
+	 */
 	public void hydrate(Game game)
 	{
 

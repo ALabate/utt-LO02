@@ -25,24 +25,29 @@ import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
-
+/**
+ * Panel where the cards are shown
+ * @author Benoit,Alabate
+ *
+ */
 public class CardPanel extends JPanel implements MouseListener{
 	
 	private static final long serialVersionUID = -6399946122226830893L;
-
+	
 	ArrayList<ArrayList<JLabel>> table;
-
 	int highlightValueRow = -1;
 	Season highlightValueSeason = null;
 	Season highlightSeason = null;
-	
 	boolean clickEnabled = false;
 	int clickedRow = -1;
 	IngredientCard ingredientCard = null;
 	AllyCard allyCard = null;
 	JButton clickButton;
 
-
+/**
+ * Constructor for an IngredientCard
+ * @param card
+ */
 	public CardPanel(IngredientCard card) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -105,7 +110,10 @@ public class CardPanel extends JPanel implements MouseListener{
 		}
 	}
 
-
+	/**
+	 * Constructor for an Allycard
+	 * @param card
+	 */
 	public CardPanel(AllyCard card) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -169,7 +177,13 @@ public class CardPanel extends JPanel implements MouseListener{
 		y++;
 		addLabel(0,y,c, new JLabel(" "));
 	}
-	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param c
+	 * @param label
+	 */
 	private void addLabel(int x, int y, GridBagConstraints c, JLabel label)
 	{
 		// Check initialization
@@ -197,7 +211,11 @@ public class CardPanel extends JPanel implements MouseListener{
 		label.setBorder(new EmptyBorder(1,1,1,1));
 		add(table.get(y).get(x), c);
 	}
-	
+	/**
+	 * 
+	 * @param season
+	 * @param link
+	 */
 	public void highlightSeason(Season season, boolean link) {
 		
 		// Gray all other seasons

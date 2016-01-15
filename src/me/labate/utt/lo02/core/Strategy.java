@@ -7,6 +7,7 @@ import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player.Bonus;
 
 /**
+ * Interface of Strategy, allow IA to take a decision when a choice is needed
  * @author alabate
  *
  */

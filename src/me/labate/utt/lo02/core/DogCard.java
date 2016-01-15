@@ -20,7 +20,7 @@ public class DogCard extends AllyCard {
 		{ {0, 1, 3, 0} }};
 	/**
 	 * constructor
-	 * @param ID
+	 * @param ID of the card you want to create
 	 */
 	public DogCard(int ID) {
 		super(ID);

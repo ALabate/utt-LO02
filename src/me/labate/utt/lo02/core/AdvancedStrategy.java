@@ -86,8 +86,9 @@ public abstract class AdvancedStrategy implements Strategy {
 	***************************************************************************************************************************************************************	/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	/**
-	 * 
-	 * @return player whose his number of menhirs is the highest except player who is playing
+	 * method which return the player who has more menhirs at this current moment of the game
+	 * @param Player who is playing
+	 * @return player whose his number of menhirs is the highest except player given in parameter
 	 */
 	public Player whoHasMoreMenhir(Player playing){
 		int targetID = 0,i = 0, maxMenhirs = 0;
@@ -109,7 +110,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 	/**
 	 * 
-	 * @return player whose his number of Seeds is the highest except player who is playing
+	 * @return player whose his number of Seeds is the highest except player who is playing (player Needed)
 	 */
 	public Player whoHasMoreSeed(){
 			int targetID = 0, i = 0, maxSeeds = 0;
@@ -126,7 +127,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 	/**
 	 * 
-	 * @return player whose his number of Score is the highest except player who is playing
+	 * @return player whose his number of Score is the highest except player who is playing (player Needed)
 	 */
 	public Player whoHasMoreScore(){
 		int targetID = 0,i = 0, maxScore = 0;
@@ -143,7 +144,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 	/**
 	 * @param player
-	 * @return sum of points geant of all the cards in all the season.
+	 * @return sum of points giant of all the cards in all season for the player given in parameter.
 	 */
 	public static int PointsGiant(Player player){
 		int points =0;
@@ -156,7 +157,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 	/**
 	 * @param player
-	 * @return sum of points Fertilizer of all cards in all season 
+	 * @return sum of points Fertilizer of all cards in all season for the player given in parameter.
 	 */
 	public static int PointsFertilizer(Player player){
 		int points =0;
@@ -169,7 +170,7 @@ public abstract class AdvancedStrategy implements Strategy {
 	}
 	/**
 	 * @param player
-	 * @return sum of points Leprechaun of all cards in all season
+	 * @return Sum of points Leprechaun of all cards in all season for the player given in parameter.
 	 */
 	public static int PointsLeprechaun(Player player){
 		int points =0;
@@ -181,9 +182,9 @@ public abstract class AdvancedStrategy implements Strategy {
 		return points;
 	}
 	/**
-	 * give the most effective method to be played in function of season, compare all the cards
-	 * @param player, check all the cards
-	 * @param season
+	 * Give the most effective method to be played in function of season, compare all the cards
+	 * @param player whose cards are going to be checked
+	 * @param season in which you want to compare
 	 * @return Method which is the best to be played
 	 */
 	public static IngredientMethod methodTheMostEffective(Player player, Season season){
@@ -201,8 +202,8 @@ public abstract class AdvancedStrategy implements Strategy {
 		return method;
 	}
 	/**
-	 *  give the most effective method to be played by looking at all the cards and all seasons
-	 * @param player, check all the cards
+	 * Give the most effective method to be played by looking at all the cards and all seasons
+	 * @param player whose cards are going to be checked
 	 * @return method to be played
 	 */
 	public static IngredientMethod methodTheMostEffective(Player player){

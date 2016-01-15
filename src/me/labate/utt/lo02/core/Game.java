@@ -8,7 +8,11 @@ import java.util.Random;
  * API to play one game without being able to break the rules
  */
 public abstract class Game {
-	
+	/**
+	 * Enumeration of different seasons.
+	 * @author Benoit
+	 *
+	 */
 	public enum Season { INIT, SPRING, SUMMER, AUTUMN, WINTER };
 	
 	@Override
@@ -22,11 +26,23 @@ public abstract class Game {
 				+ ", maxPlayer=" + maxPlayer
 				+ "]";
 	}
+	/**
+	 * Enumeration of choice a player is needed to do
+	 * @author Benoit,Alabate
+	 * 
+	 */
 	public enum Choice { NOTHING, BONUS, INGREDIENT, DEFEND, MOLE };
+	/**
+	 * Enumeration of different actions in the game
+	 * @author Benoit,Alabate
+	 *
+	 */
 	public enum Action { NOTHING, GIANT, FERTILIZER, LEPRECHAUN_REQUEST, LEPRECHAUN, MOLE, BONUS_ALLY, BONUS_SEEDS };	
 
 	//////////////////// General : Methods ////////////////////
-	
+	/**
+	 * Abstract Constructor
+	 */
 	protected Game() {
 		// Init vars
 		players = new ArrayList<Player>(); 

@@ -16,11 +16,15 @@ import me.labate.utt.lo02.core.Game;
 import me.labate.utt.lo02.core.Game.Action;
 import me.labate.utt.lo02.core.Game.Season;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
-
+/**
+ * This class own the print console's methods in order to make Cli.java more readable. 
+ * @author Benoit,Alabate
+ *
+ */
 public class Console {
 
 	/**
-	 * Print one ingredient card on the screen
+	 * Print only one ingredient card on the console's screen
 	 * @param card
 	 */
 	public static void showIngredientCard(IngredientCard card) {
@@ -30,7 +34,7 @@ public class Console {
 	}
 
 	/**
-	 * Print ingredient cards on the screen
+	 * Print all the ingredient cards on the screen
 	 * @param cards
 	 */
 	public static void showIngredientCard(ArrayList<IngredientCard> cards) {
@@ -359,6 +363,7 @@ public class Console {
 	
 	/**
 	 * Let the user see what happened by asking him to press any key to continue
+	 * @param playerName : name of player
 	 */
 	public static void waitToContinue(String playerName) {
 		Console.jumpLine(1);
@@ -367,6 +372,8 @@ public class Console {
 	
 	/**
 	 * Let the user tell when he is ready by asking him to press any key to continue
+	 * @param playerName : name of player
+	 * @param game : the currentGame
 	 */
 	public static void waitToBeReady(String playerName,Game game) {
 		boolean cont = true;
@@ -389,7 +396,7 @@ public class Console {
 	
 	/**
 	 * Jump some lines on the terminal
-	 * @param line the number of line to jump
+	 * @param line : how many lines to jump
 	 */
 	public static void jumpLine(int line) {
 		for(int i = 0; i < line; i++) {
@@ -571,6 +578,10 @@ public class Console {
 		return game;
 		
 	}
+	/**
+	 * interact with user and purpose him to use his mole
+	 * @param game
+	 */
 	public static void purposeUseMole(Game game){
 		HashMap<String, String> propositions = new HashMap<String, String>();
 		String question = "";
@@ -642,6 +653,9 @@ public class Console {
 			}
 		}
 	}
+	/**
+	 * print the instruction for using a mole attack.
+	 */
 	public static void instrucionMole(){
 		System.out.println("if you want to use or see your allyCard, dont forget that you can type \n");
 		System.out.println("\"Ally\" or \"Mole\" or \"Help\" \t\tto reprint these information when you see :\n");

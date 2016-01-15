@@ -17,9 +17,6 @@ public class StockAllyCard extends StockCard {
 		super();
 	}
 
-	/*
-	 * @see me.labate.utt.lo02.core.StockCard#reset()
-	 */
 	@Override
 	public void reset() {
 		{

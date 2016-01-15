@@ -3,7 +3,7 @@ package me.labate.utt.lo02.core;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player.Bonus;
 /**
- * construct menhir as faster as it can
+ * Strategy which constructs menhir as faster as it can
  * @author Benoit
  *
  */

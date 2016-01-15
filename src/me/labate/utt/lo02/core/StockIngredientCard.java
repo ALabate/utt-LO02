@@ -1,5 +1,9 @@
 package me.labate.utt.lo02.core;
-
+/**
+ * Stock of IngredientCard
+ * @author Benoit
+ *
+ */
 public class StockIngredientCard extends StockCard {
 
 	/**

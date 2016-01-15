@@ -4,12 +4,17 @@ import me.labate.utt.lo02.core.Game.Action;
 import me.labate.utt.lo02.core.Game.Choice;
 import me.labate.utt.lo02.core.Game.Season;
 /**
- * Ingredients Card of the game
- * @author Alabate
+ * Ingredient Card of the game
+ * @author Alabate,Benoit
  *
  */
 public class IngredientCard extends Card {
 
+	/**
+	 * Enumeration of method which can be played by an Ingredient card
+	 * @author Alabate,Benoit
+	 *
+	 */
 	public enum IngredientMethod { GIANT, FERTILIZER, LEPRECHAUN };
 	/**
 	 * convert int to IngredientMethod
@@ -25,6 +30,11 @@ public class IngredientCard extends Card {
 		}
 		return method;
 	}
+	/**
+	 * convert IngredientCard to int
+	 * @param method Enumeration of Ingredient Method
+	 * @return value of the Enumeration of Ingredient Method
+	 */
 	public static int IngredientMethodToInt(IngredientMethod method){
 		int value;
 		switch(method){

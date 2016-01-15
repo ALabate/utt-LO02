@@ -14,9 +14,17 @@ import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 import java.util.HashMap;
 	
 
-
+/**
+ * This class own the main program in order to run the Game's core properly.
+ * It's the console mode of the game.
+ * @author Benoit,Alabate
+ *
+ */
 public class Cli {	
-	
+	/**
+	 * Main method, run the Game's core in console
+	 * @param args can be null.
+	 */
 	public static void main(String[] args) {
 		
 		// Let user set parameters.

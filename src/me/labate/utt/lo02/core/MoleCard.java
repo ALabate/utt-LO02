@@ -8,7 +8,9 @@ import me.labate.utt.lo02.core.Game.Season;
  *
  */
 public class MoleCard extends AllyCard {
-	
+	/**
+	 * the deck of moleCard
+	 */
 	private static final int[][][] deck = {
 		// Mole cards
 		{ {1, 1, 1, 1}},

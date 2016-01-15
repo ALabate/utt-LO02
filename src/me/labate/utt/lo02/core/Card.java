@@ -3,7 +3,7 @@ package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.Game.Season;
 /**
- * Abtract class of a Card
+ * Abtract class of a Card in the Game
  * @author Alabate
  *
  */

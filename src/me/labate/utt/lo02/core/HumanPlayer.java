@@ -1,12 +1,17 @@
 package me.labate.utt.lo02.core;
 
 /**
- * user as player
+ * Represent the User as a Player
  * @author Alabate
  *
  */
 public class HumanPlayer extends Player {
 
+	/**
+	 * Constructor
+	 * @param context
+	 * @param name
+	 */
 	public HumanPlayer(Game context, String name) {
 		super(context, name);
 	}

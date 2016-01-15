@@ -2,7 +2,7 @@ package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.Game.Season;
 /**
- * AllyCard the abtract method
+ * Abstract AllyCard of the game
  * @author Alabate
  *
  */

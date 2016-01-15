@@ -2,7 +2,7 @@ package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.AllyCard.AllyMethod;
 /**
- * Advanced Game, whith the allyCards Rules
+ * Advanced Game, whith AllyCards (Dog and Mole)
  * @author Alabate
  *
  */

@@ -8,7 +8,11 @@ import java.util.Random;
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 import me.labate.utt.lo02.core.Player.Bonus;
 
-
+/**
+ * Basic Strategy which acts totally randomly
+ * @author Benoit
+ *
+ */
 public class RandomStrategy implements Strategy {
 
 
@@ -60,12 +64,12 @@ public class RandomStrategy implements Strategy {
 		Random rand = new Random();
 		return (rand.nextInt(1) == 0);
 	}
-
+	@Override
 	public boolean moleAttack(Player playing) {
 		Random rand = new Random();
 		return (rand.nextInt(1) == 0);
 	}
-
+	@Override
 	public Player moleAttackTarget(Player playing) {
 		Random rand = new Random();
 		return context.getPlayer(rand.nextInt(context.getPlayerCount()));

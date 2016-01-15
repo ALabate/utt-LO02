@@ -8,7 +8,9 @@ import java.util.Random;
  *
  */
 public abstract class StockCard {
-	
+	/**
+	 * Queue of cards, is the most representative fr a stock.
+	 */
 	protected LinkedList<Card> stock = new LinkedList<Card>(); 
 	/**
 	 * Constructor : fill the stock and shuffle it.

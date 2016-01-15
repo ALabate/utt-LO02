@@ -5,7 +5,7 @@ package me.labate.utt.lo02.core;
 
 import me.labate.utt.lo02.core.IngredientCard.IngredientMethod;
 /**
- * a player controlled by the IA
+ * A player controlled by the IA
  * @author Benoit, Alabate
  *
  */

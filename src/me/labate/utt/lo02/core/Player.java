@@ -57,6 +57,7 @@ public abstract class Player {
 	/**
 	 * Get string return name
 	 */
+	@Override
 	public String toString() {
 		return this.getName();
 	}
